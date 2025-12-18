@@ -185,7 +185,7 @@
         }
 
         function loadInversionistaFiles() {
-            fetch('/get_inversionista_files')
+            fetch('https://api.teddybarza.com/get_inversionista_files')
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {

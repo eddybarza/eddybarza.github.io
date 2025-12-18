@@ -228,7 +228,7 @@
 
             const selectedFile = availableFiles[selectedIndex];
             
-            fetch('/get_inversionista_file', {
+            fetch('https://api.teddybarza.com/get_inversionista_file', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({ filename: selectedFile.filename })
@@ -585,7 +585,7 @@
         }
 
         function loadDifferencesFile() {
-            fetch('/get_differences_file')
+            fetch('https://api.teddybarza.com/get_differences_file')
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
@@ -607,7 +607,7 @@
         }
 
         function loadDominiosFile() {
-            fetch('/get_dominios_file')
+            fetch('https://api.teddybarza.com/get_dominios_file')
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
@@ -669,7 +669,7 @@
         }
 
         function loadBusSchedules() {
-            fetch('/fetch_schedules')
+            fetch('https://api.teddybarza.com/fetch_schedules')
                 .then(response => response.json())
                 .then(data => {
                     allBusSchedules = data;
@@ -748,7 +748,7 @@
         }
 
         function updateVisitCounter() {
-            fetch('/update_visits', {
+            fetch('https://api.teddybarza.com/update_visits', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'}
             })

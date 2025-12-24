@@ -1,0 +1,462 @@
+REPORTE DE DIFERENCIAS GENERADO AUTOMÁTICAMENTE
+Archivos analizados: 20
+
+
+====================================================================================================
+ COMPARANDO: 20251222 vs 20251222
+====================================================================================================
+
+[+] No hay nuevas posiciones.
+
+[-] POSICIONES CERRADAS (2):
+    Símbolo    Invrs   Era Invert.  Unidades   Nombre
+  - IQQH.DE    1       $8.43        0.9028     iShares Global Clean Energy UCITS ETF
+  - CRWV.RTH   1       $41.74       0.5837     CoreWeave Inc
+
+[*] CAMBIOS DETECTADOS (7):
+    Símbolo    Dif. Inv ($)    Dif. Uni        Dif. Invrs   Totales Actuales               Nombre
+  * FCX        $-1.98          -0.0446         0           2 inv / $639.40               Freeport-McMoRan Inc
+  * META       +$6.29          +0.0100         +1          14 inv / $1242.50             Meta Platforms Inc
+  * NKE        +$8.53          +0.1475         0           1 inv / $22.76                NIKE
+  * NVO        +$12.74         +0.2652         0           5 inv / $330.53               Novo-Nordisk A/S SPONS ADR
+  * ZETA       +$50.99         +2.7904         +1          2 inv / $109.81               Zeta Global Holdings Corp
+  * TQQQ       $-2.00          -0.0388         0           1 inv / $20.83                ProShares UltraPro QQQ
+  * CCL        $-2.02          -0.0706         0           1 inv / $10.08                Carnival Corp
+
+====================================================================================================
+ COMPARANDO: 20251222 vs 20251220
+====================================================================================================
+
+[+] NUEVAS POSICIONES (1):
+    Símbolo    Invrs   Invertido    Unidades   Nombre
+  + PPFB.DE    1       $5.64        0.0669     iShares Physical Gold ETC
+
+[-] POSICIONES CERRADAS (1):
+    Símbolo    Invrs   Era Invert.  Unidades   Nombre
+  - BWE.OL     1       $17.06       4.9148     BW Energy Ltd
+
+[*] CAMBIOS DETECTADOS (3):
+    Símbolo    Dif. Inv ($)    Dif. Uni        Dif. Invrs   Totales Actuales               Nombre
+  * PLTR       $-5.20          -0.0310         0           4 inv / $667.57               Palantir Technologies Inc.
+  * NKE        +$9.55          +0.1626         0           1 inv / $14.23                NIKE
+  * XFVT.DE    $-1.95          -0.0550         0           1 inv / $10.45                Xtrackers Vietnam Swap UCITS ETF
+
+====================================================================================================
+ COMPARANDO: 20251220 vs 20251219
+====================================================================================================
+
+[+] No hay nuevas posiciones.
+
+[-] No se cerraron posiciones.
+
+[*] CAMBIOS DETECTADOS (9):
+    Símbolo    Dif. Inv ($)    Dif. Uni        Dif. Invrs   Totales Actuales               Nombre
+  * PFE        +$2.00          +0.0794         0           2 inv / $64.21                Pfizer
+  * FCX        $-1.09          -0.0266         0           2 inv / $641.38               Freeport-McMoRan Inc
+  * TQQQ       $-2.00          -0.0398         0           1 inv / $22.83                ProShares UltraPro QQQ
+  * RKLB       $-4.25          -0.1009         0           1 inv / $39.52                Rocket Lab Corp
+  * NCLH       $-2.39          -0.1272         0           1 inv / $42.30                Norwegian Cruise Line Holdings
+  * ASTS       $-2.11          -0.0369         0           1 inv / $24.62                AST SpaceMobile Inc
+  * UPS        +$2.00          +0.0198         0           3 inv / $106.35               United Parcel Service Inc
+  * ANET       $-85.47         -0.6659         -1          1 inv / $11.39                Arista Networks Inc
+  * CCL        $-6.80          -0.2512         0           1 inv / $12.10                Carnival Corp
+
+====================================================================================================
+ COMPARANDO: 20251219 vs 20251218
+====================================================================================================
+
+[+] NUEVAS POSICIONES (1):
+    Símbolo    Invrs   Invertido    Unidades   Nombre
+  + NKE        1       $4.68        0.0796     NIKE
+
+[-] No se cerraron posiciones.
+
+[*] Sin cambios en las posiciones existentes.
+
+====================================================================================================
+ COMPARANDO: 20251218 vs 20251218
+====================================================================================================
+
+[+] NUEVAS POSICIONES (3):
+    Símbolo    Invrs   Invertido    Unidades   Nombre
+  + USO        1       $59.11       4.3668     United States Oil Fund
+  + PPLT       1       $13.11       0.3746     Abrdn Platinum ETF Trust
+  + BNDX       1       $15.09       0.3118     Vanguard Total International Bond ETF
+
+[-] POSICIONES CERRADAS (1):
+    Símbolo    Invrs   Era Invert.  Unidades   Nombre
+  - COL.MC     1       $2.96        0.488      Colonial SFL Socimi SA
+
+[*] CAMBIOS DETECTADOS (15):
+    Símbolo    Dif. Inv ($)    Dif. Uni        Dif. Invrs   Totales Actuales               Nombre
+  * LIT        +$13.11         +1.0240         +1          2 inv / $15.18                Global X Lithium & Battery Tech ETF
+  * MDLZ       $-9.50          -0.1753         0           1 inv / $38.27                Mondelez International Inc
+  * UNH        $-13.57         -0.2050         0           3 inv / $70.93                UnitedHealth
+  * AMZN       $-2.97          -0.0131         -1          12 inv / $969.55              Amazon.com Inc
+  * TQQQ       $-3.00          -0.0601         0           1 inv / $24.83                ProShares UltraPro QQQ
+  * HIMS       +$32.76         +0.9373         +1          3 inv / $342.56               Hims & Hers Health Inc
+  * KSPI       +$53.56         +0.6671         +1          2 inv / $68.02                Kaspi.kz
+  * GLD        $-74.32         -0.3734         0           3 inv / $292.17               SPDR Gold
+  * UPS        +$25.10         +0.2460         +1          3 inv / $104.35               United Parcel Service Inc
+  * NVDA       $0.00           -0.7129         0           8 inv / $1220.20              NVIDIA Corporation
+  * FTNT       +$3.00          +0.0375         0           2 inv / $93.46                Fortinet Inc
+  * TMUS       $-14.25         -0.3600         0           1 inv / $57.48                T-Mobile Us Inc
+  * CSP1.L     +$10.49         +0.0144         0           1 inv / $29.16                iShares Core S&P 500 UCITS ETF
+  * BND        +$20.12         +0.2708         +1          3 inv / $153.00               Vanguard Total Bond Market ETF
+  * LULU       +$3.09          +0.0140         +1          2 inv / $124.72               Lululemon Athletica Inc
+
+====================================================================================================
+ COMPARANDO: 20251218 vs 20251217
+====================================================================================================
+
+[+] NUEVAS POSICIONES (1):
+    Símbolo    Invrs   Invertido    Unidades   Nombre
+  + OHLA.MC    1       $4.46        10.5305    OHL
+
+[-] POSICIONES CERRADAS (1):
+    Símbolo    Invrs   Era Invert.  Unidades   Nombre
+  - CLOU       1       $2.96        0.1303     Global X Cloud Computing ETF
+
+[*] CAMBIOS DETECTADOS (2):
+    Símbolo    Dif. Inv ($)    Dif. Uni        Dif. Invrs   Totales Actuales               Nombre
+  * NOW.RTH    $0.00           +0.2037         0           1 inv / $39.02                ServiceNow Inc
+  * GOOG       $-10.34         -0.0344         0           10 inv / $1668.72             Alphabet
+
+====================================================================================================
+ COMPARANDO: 20251217 vs 20251217
+====================================================================================================
+
+[+] NUEVAS POSICIONES (3):
+    Símbolo    Invrs   Invertido    Unidades   Nombre
+  + CSP1.L     1       $18.67       0.0256     iShares Core S&P 500 UCITS ETF
+  + MSTR.RTH   1       $27.25       0.1673     MicroStrategy Incorporated
+  + MRL.MC     1       $3.96        0.2807     Merlin Properties SOCIMI SA
+
+[-] POSICIONES CERRADAS (4):
+    Símbolo    Invrs   Era Invert.  Unidades   Nombre
+  - SOLB.BR    1       $1.98        0.0634     SOLVAY
+  - LPL        1       $2.09        0.6129     LG Display Co Ltd - ADR
+  - LUV        1       $5.81        0.1587     Southwest Airlines Co
+  - OHLA.MC    1       $2.96        6.77       OHL
+
+[*] CAMBIOS DETECTADOS (18):
+    Símbolo    Dif. Inv ($)    Dif. Uni        Dif. Invrs   Totales Actuales               Nombre
+  * FCX        $-2.06          -0.0497         0           2 inv / $642.47               Freeport-McMoRan Inc
+  * AVAV       $-50.49         -0.2028         0           2 inv / $346.55               AeroVironment Inc.
+  * CRWV.RTH   +$5.46          +0.0830         0           1 inv / $41.74                CoreWeave Inc
+  * AMZN       +$2.97          +0.0131         +1          13 inv / $972.52              Amazon.com Inc
+  * IAG.L      $-2.96          -0.5761         0           3 inv / $87.15                International Consolidated Airlines
+  * HOG        +$2.00          +0.0933         0           1 inv / $15.55                Harley-Davidson Inc
+  * TQQQ       +$5.00          +0.0999         0           1 inv / $27.83                ProShares UltraPro QQQ
+  * HIMS       +$8.98          +0.2554         0           2 inv / $309.80               Hims & Hers Health Inc
+  * ABNB       $-7.45          -0.0571         0           3 inv / $47.28                Airbnb Inc
+  * NCLH       $-1.68          -0.0894         0           1 inv / $44.69                Norwegian Cruise Line Holdings
+  * PDD        +$7.20          +0.0686         0           2 inv / $104.60               PDD Holdings Inc - ADR
+  * WGLD.L     $-27.85         -0.0666         0           1 inv / $4.98                 WisdomTree Core Physical Gold
+  * ORCL.RTH   +$14.55         +0.0808         0           1 inv / $59.94                Oracle Corporation
+  * NVDA       +$10.60         +0.0620         +1          8 inv / $1220.20              NVIDIA Corporation
+  * MU         +$128.71        +0.5694         0           2 inv / $359.88               Micron Technology, Inc.
+  * UBER       +$8.75          +0.1092         0           3 inv / $124.14               Uber Technologies Inc.
+  * GOOG       +$14.34         +0.0477         +1          10 inv / $1679.06             Alphabet
+  * LDOS       $-77.80         -0.4294         0           1 inv / $286.12               Leidos Holdings Inc
+
+====================================================================================================
+ COMPARANDO: 20251217 vs 20251216
+====================================================================================================
+
+[+] No hay nuevas posiciones.
+
+[-] No se cerraron posiciones.
+
+[*] CAMBIOS DETECTADOS (3):
+    Símbolo    Dif. Inv ($)    Dif. Uni        Dif. Invrs   Totales Actuales               Nombre
+  * 0390.HK    +$9.89          +20.4560        0           1 inv / $58.12                China Railway Group
+  * IAG.L      $-2.84          -0.5570         0           3 inv / $90.11                International Consolidated Airlines
+  * ABNB       $-2.69          -0.0209         0           3 inv / $54.73                Airbnb Inc
+
+====================================================================================================
+ COMPARANDO: 20251216 vs 20251215
+====================================================================================================
+
+[+] NUEVAS POSICIONES (1):
+    Símbolo    Invrs   Invertido    Unidades   Nombre
+  + IQQH.DE    1       $8.43        0.9028     iShares Global Clean Energy UCITS ETF
+
+[-] POSICIONES CERRADAS (1):
+    Símbolo    Invrs   Era Invert.  Unidades   Nombre
+  - EURUSD     1       $8.69        74.9364    EUR/USD
+
+[*] CAMBIOS DETECTADOS (30):
+    Símbolo    Dif. Inv ($)    Dif. Uni        Dif. Invrs   Totales Actuales               Nombre
+  * AF.PA      $-1.48          -0.1165         0           1 inv / $42.66                Air France-KLM
+  * PFE        +$2.00          +0.0783         0           2 inv / $62.21                Pfizer
+  * INSW       $-13.01         -0.2397         0           1 inv / $27.92                International Seaways Inc
+  * 2B76.DE    +$1.99          +0.1239         0           1 inv / $6.93                 iShares Automation & Robotics UCITS ETF
+  * ARKI.L     +$1.99          +0.1993         0           1 inv / $19.78                ARK Artificial Intelligence & Robotics UCITS ETF
+  * HSAI       +$11.67         +0.5378         0           1 inv / $40.83                Hesai Group
+  * NVO        +$10.92         +0.2248         0           5 inv / $317.79               Novo-Nordisk A/S SPONS ADR
+  * MANU       +$5.00          +0.3243         0           1 inv / $19.87                Manchester United
+  * CRWV.RTH   +$9.08          +0.1329         0           1 inv / $36.28                CoreWeave Inc
+  * AAL        $-1.51          -0.1457         0           2 inv / $13.48                American Airlines Group Inc
+  * HAUTO.OL   +$8.64          +0.9010         0           1 inv / $74.34                Hoegh Autoliners ASA
+  * IAG.L      $-1.98          -0.3967         0           3 inv / $92.95                International Consolidated Airlines
+  * TQQQ       +$2.00          +0.0388         0           1 inv / $22.83                ProShares UltraPro QQQ
+  * LHA.DE     $-2.05          -0.2199         0           1 inv / $13.10                Deutsche Lufthansa Aktiengesellschaft
+  * MARA       +$8.59          +0.7845         0           1 inv / $27.20                Marathon Digital Holdings Inc.
+  * MELI       +$10.64         +0.0055         0           5 inv / $244.26               MercadoLibre Inc
+  * CIVI       $-17.16         -0.6017         0           1 inv / $55.06                Civitas Resources Inc.
+  * MP         +$2.00          +0.0375         0           1 inv / $11.98                MP Materials Corp.
+  * BTC        $-10.05         0.0000          0           7 inv / $243.28               Bitcoin
+  * VAL.US     $-14.26         -0.2481         0           1 inv / $14.26                Valaris Limited
+  * ABNB       $-1.55          -0.0120         0           3 inv / $57.42                Airbnb Inc
+  * NCLH       $-2.97          -0.1460         0           1 inv / $46.37                Norwegian Cruise Line Holdings
+  * AUDCHF     +$8.67          +130.6170       0           1 inv / $18.57                AUD/CHF
+  * BABA       $-2.67          -0.0168         -1          8 inv / $267.65               Alibaba-ADR
+  * WGLD.L     $-4.65          -0.0110         0           1 inv / $32.83                WisdomTree Core Physical Gold
+  * GOOG       +$877.19        -1.4230         0           9 inv / $1664.72              Alphabet
+  * CCL        $-4.94          -0.1890         0           1 inv / $18.90                Carnival Corp
+  * ASML.NV    $-10.05         -0.0130         0           4 inv / $467.77               ASML Holding NV
+  * SPY5.L     $-3.98          -0.0100         -1          1 inv / $443.55               SPDR S&P 500 UCITS ETF
+  * KROS       $-3.04          -0.1771         0           1 inv / $6.02                 Keros Therapeutics Inc
+
+====================================================================================================
+ COMPARANDO: 20251215 vs 20251215
+====================================================================================================
+
+[+] NUEVAS POSICIONES (6):
+    Símbolo    Invrs   Invertido    Unidades   Nombre
+  + CRWV.RTH   1       $27.20       0.3678     CoreWeave Inc
+  + ORCL.RTH   1       $45.39       0.244      Oracle Corporation
+  + AGRO       1       $106.40      12.5917    Adecoagro S.A.
+  + ARM        1       $85.38       0.6773     ARM Holdings PLC
+  + LLY        1       $21.55       0.0203     Eli Lilly & Co
+  + NOW.RTH    1       $39.02       0.0509     ServiceNow Inc
+
+[-] No se cerraron posiciones.
+
+[*] CAMBIOS DETECTADOS (12):
+    Símbolo    Dif. Inv ($)    Dif. Uni        Dif. Invrs   Totales Actuales               Nombre
+  * META       $0.00           -0.3348         0           13 inv / $1236.21             Meta Platforms Inc
+  * BKNG       $-92.47         -0.0172         -1          1 inv / $4.95                 Booking Holdings Inc
+  * AMZN       $0.00           -1.9136         0           12 inv / $969.55              Amazon.com Inc
+  * IAG.L      $-1.97          -0.3999         0           3 inv / $94.93                International Consolidated Airlines
+  * RR.L       $-9.29          -0.6262         0           4 inv / $620.36               Rolls-Royce
+  * VAL.US     $-9.64          -0.1677         0           1 inv / $28.52                Valaris Limited
+  * WGLD.L     $-4.64          -0.0110         0           1 inv / $37.48                WisdomTree Core Physical Gold
+  * NVDA       +$602.50        -2.3966         0           7 inv / $1209.60              NVIDIA Corporation
+  * GOOG       +$36.80         -1.2523         0           9 inv / $787.53               Alphabet
+  * RACE       $-13.04         -0.0362         0           1 inv / $84.04                Ferrari NV
+  * VALE       $-75.03         -7.2423         -1          2 inv / $38.21                Vale SA-ADR
+  * AAPL       +$639.62        +2.3369         +1          7 inv / $1120.39              Apple
+
+====================================================================================================
+ COMPARANDO: 20251215 vs 20251214
+====================================================================================================
+
+[+] NUEVAS POSICIONES (1):
+    Símbolo    Invrs   Invertido    Unidades   Nombre
+  + AUDCHF     1       $9.90        148.8432   AUD/CHF
+
+[-] No se cerraron posiciones.
+
+[*] CAMBIOS DETECTADOS (4):
+    Símbolo    Dif. Inv ($)    Dif. Uni        Dif. Invrs   Totales Actuales               Nombre
+  * IAG.L      $-33.78         -6.4815         0           3 inv / $96.90                International Consolidated Airlines
+  * BABA       +$4.66          +0.0304         +1          9 inv / $270.32               Alibaba-ADR
+  * GOOG       +$18.64         +0.0596         0           9 inv / $750.73               Alphabet
+  * SPY5.L     +$3.98          +0.0100         +1          2 inv / $447.53               SPDR S&P 500 UCITS ETF
+
+====================================================================================================
+ COMPARANDO: 20251214 vs 20251214
+====================================================================================================
+
+[+] No hay nuevas posiciones.
+
+[-] No se cerraron posiciones.
+
+[*] Sin cambios en las posiciones existentes.
+
+====================================================================================================
+ COMPARANDO: 20251214 vs 20251213
+====================================================================================================
+
+[+] No hay nuevas posiciones.
+
+[-] No se cerraron posiciones.
+
+[*] Sin cambios en las posiciones existentes.
+
+====================================================================================================
+ COMPARANDO: 20251213 vs 20251213
+====================================================================================================
+
+[+] No hay nuevas posiciones.
+
+[-] No se cerraron posiciones.
+
+[*] CAMBIOS DETECTADOS (1):
+    Símbolo    Dif. Inv ($)    Dif. Uni        Dif. Invrs   Totales Actuales               Nombre
+  * ADA        +$9.50          +45.1338        0           2 inv / $31.13                Cardano
+
+====================================================================================================
+ COMPARANDO: 20251213 vs 20251212
+====================================================================================================
+
+[+] No hay nuevas posiciones.
+
+[-] POSICIONES CERRADAS (2):
+    Símbolo    Invrs   Era Invert.  Unidades   Nombre
+  - WIX        1       $44.39       0.4621     Wix.com Ltd
+  - OKTA       1       $104.18      1.2423     Okta Inc
+
+[*] CAMBIOS DETECTADOS (2):
+    Símbolo    Dif. Inv ($)    Dif. Uni        Dif. Invrs   Totales Actuales               Nombre
+  * DECK       $-61.57         -0.7437         -1          1 inv / $13.61                Deckers Outdoor Corp
+  * CRM        $-103.86        -0.4257         -1          1 inv / $12.84                Salesforce Inc
+
+====================================================================================================
+ COMPARANDO: 20251212 vs 20251211
+====================================================================================================
+
+[+] NUEVAS POSICIONES (1):
+    Símbolo    Invrs   Invertido    Unidades   Nombre
+  + TMUS       1       $71.73       1.8128     T-Mobile Us Inc
+
+[-] POSICIONES CERRADAS (3):
+    Símbolo    Invrs   Era Invert.  Unidades   Nombre
+  - UNG        1       $9.93        3.8847     US Natural Gas
+  - ADS.DE     1       $4.67        0.0253     Adidas AG
+  - AGRO       1       $106.40      12.5917    Adecoagro S.A.
+
+[*] CAMBIOS DETECTADOS (25):
+    Símbolo    Dif. Inv ($)    Dif. Uni        Dif. Invrs   Totales Actuales               Nombre
+  * PLTR       $-420.46        -2.2665         -1          4 inv / $672.77               Palantir Technologies Inc.
+  * GE         +$3.66          +0.0123         0           1 inv / $34.01                General Electric Co
+  * META       $0.00           -0.3298         0           13 inv / $1236.21             Meta Platforms Inc
+  * AMZN       $-30.84         -0.1336         -1          12 inv / $969.55              Amazon.com Inc
+  * USDSGD     +$8.66          +86.6000        0           1 inv / $17.48                USD/SGD
+  * TQQQ       +$4.96          +0.0945         0           1 inv / $20.83                ProShares UltraPro QQQ
+  * ADBE       +$13.31         +0.0370         0           4 inv / $278.30               Adobe Systems Inc
+  * GAW.L      +$128.21        +0.4873         +1          2 inv / $215.13               Games Workshop
+  * NTGY.MC    +$2.98          +0.1040         0           1 inv / $5.95                 Naturgy Energy Group, S.A.
+  * MP         +$1.98          +0.0353         0           1 inv / $9.98                 MP Materials Corp.
+  * MSFT       $-100.38        -0.2092         -1          10 inv / $1003.63             Microsoft
+  * JNJ        +$3.45          +0.0164         0           1 inv / $33.25                Johnson & Johnson
+  * RR.L       +$4.78          +0.3248         0           4 inv / $629.65               Rolls-Royce
+  * ABNB       $-2.00          -0.0162         0           3 inv / $58.97                Airbnb Inc
+  * NCLH       $-0.89          -0.0476         0           1 inv / $49.34                Norwegian Cruise Line Holdings
+  * XFVT.DE    +$2.93          +0.0769         0           1 inv / $12.40                Xtrackers Vietnam Swap UCITS ETF
+  * WGLD.L     +$13.95         +0.0333         0           1 inv / $42.12                WisdomTree Core Physical Gold
+  * CGNX       +$1.98          +0.0558         0           1 inv / $6.42                 Cognex Corp
+  * ANET       +$42.69         +0.3324         0           2 inv / $96.86                Arista Networks Inc
+  * NVDA       $0.00           -2.2937         0           7 inv / $607.10               NVIDIA Corporation
+  * FTNT       +$42.69         +0.5168         0           2 inv / $90.46                Fortinet Inc
+  * GOOG       +$25.69         +0.0828         0           9 inv / $732.09               Alphabet
+  * UBSG.ZU    $-6.57          -0.2003         0           3 inv / $671.61               UBS Group AG
+  * VALE       +$3.22          +0.2897         +1          3 inv / $113.24               Vale SA-ADR
+  * AAPL       $-102.20        -0.4397         0           6 inv / $480.77               Apple
+
+====================================================================================================
+ COMPARANDO: 20251211 vs 20251210
+====================================================================================================
+
+[+] NUEVAS POSICIONES (6):
+    Símbolo    Invrs   Invertido    Unidades   Nombre
+  + SDIA.L     1       $29.72       4.7212     iShares USD Short Duration Corp Bond UCITS ETF
+  + SCHD       1       $40.71       1.4729     Schwab US Dividend Equity ETF
+  + NTGY.MC    1       $2.97        0.1023     Naturgy Energy Group, S.A.
+  + UDOW       1       $56.29       0.928      ProShares UltraPro Dow30
+  + SOLB.BR    1       $1.98        0.0634     SOLVAY
+  + JEPI       1       $35.17       0.609      Jpmorgan Equity Premium Inco
+
+[-] POSICIONES CERRADAS (3):
+    Símbolo    Invrs   Era Invert.  Unidades   Nombre
+  - RBLX       1       $121.61      0.9595     Roblox Corp.
+  - MAERSKB.CO 1       $2.52        0.01       A P Moller Maersk
+  - JEPQ       1       $38.42       0.7086     Jpm Nasdaq Equity Premium
+
+[*] CAMBIOS DETECTADOS (12):
+    Símbolo    Dif. Inv ($)    Dif. Uni        Dif. Invrs   Totales Actuales               Nombre
+  * RSP        +$69.04         +0.3552         +1          2 inv / $106.02               Invesco S&P 500 Equal Weight ETF
+  * FCX        $-0.81          -0.0211         0           2 inv / $644.53               Freeport-McMoRan Inc
+  * UNG        $-9.93          -3.7699         0           1 inv / $9.93                 US Natural Gas
+  * AXP        $-19.32         -0.0650         -2          1 inv / $1.00                 American Express CO
+  * AMZN       +$6.55          +0.0271         -1          13 inv / $1000.39             Amazon.com Inc
+  * TQQQ       $-138.10        -2.7768         -1          1 inv / $15.87                ProShares UltraPro QQQ
+  * CNDX.L     $-1.97          -0.0100         -1          1 inv / $93.98                iShares NASDAQ 100 UCITS ETF usd
+  * NCLH       $-1.97          -0.1111         0           1 inv / $50.23                Norwegian Cruise Line Holdings
+  * IJR        +$37.00         +0.2949         0           1 inv / $81.20                iShares Core S&P Small-Cap ETF
+  * UBER       $-45.56         -0.4934         -1          3 inv / $115.39               Uber Technologies Inc.
+  * CCL        $-1.97          -0.0786         0           1 inv / $23.84                Carnival Corp
+  * VALE       +$75.03         +7.2423         +1          2 inv / $110.02               Vale SA-ADR
+
+====================================================================================================
+ COMPARANDO: 20251210 vs 20251209
+====================================================================================================
+
+[+] No hay nuevas posiciones.
+
+[-] POSICIONES CERRADAS (2):
+    Símbolo    Invrs   Era Invert.  Unidades   Nombre
+  - TMUS       1       $72.43       1.6458     T-Mobile Us Inc
+  - DAL        1       $4.08        0.0878     Delta Air Lines Inc (DE)
+
+[*] CAMBIOS DETECTADOS (21):
+    Símbolo    Dif. Inv ($)    Dif. Uni        Dif. Invrs   Totales Actuales               Nombre
+  * META       +$12.06         +0.0185         0           13 inv / $1236.21             Meta Platforms Inc
+  * MDLZ       +$9.50          +0.1753         0           1 inv / $47.77                Mondelez International Inc
+  * AMZN       +$1.97          +0.0100         +1          14 inv / $993.84              Amazon.com Inc
+  * ADA        $-9.45          -45.5740        0           2 inv / $21.63                Cardano
+  * TQQQ       $-4.93          -0.0901         0           2 inv / $153.97               ProShares UltraPro QQQ
+  * HIMS       +$5.97          +0.1566         0           2 inv / $300.82               Hims & Hers Health Inc
+  * ADBE       +$38.37         +0.1112         0           4 inv / $264.99               Adobe Systems Inc
+  * MELI       +$7.35          +0.0037         0           5 inv / $233.62               MercadoLibre Inc
+  * MSFT       +$79.33         +0.1653         0           11 inv / $1104.01             Microsoft
+  * RR.L       +$120.28        +8.1504         0           4 inv / $624.87               Rolls-Royce
+  * BRK.B      $-14.32         -0.0280         -1          2 inv / $153.83               Berkshire Hathaway Inc
+  * CL         $-28.97         -0.3655         -1          1 inv / $11.19                Colgate-Palmolive
+  * BABA       $-9.39          -0.0598         -1          8 inv / $265.66               Alibaba-ADR
+  * WGLD.L     +$13.90         +0.0333         0           1 inv / $28.17                WisdomTree Core Physical Gold
+  * CGNX       +$1.97          +0.0533         0           1 inv / $4.44                 Cognex Corp
+  * SOFI       $-9.52          -0.3496         -1          1 inv / $130.57               SoFi Technologies Inc
+  * UBER       +$18.90         +0.2219         0           4 inv / $160.95               Uber Technologies Inc.
+  * GOOG       +$13.94         +0.0440         0           9 inv / $706.40               Alphabet
+  * PSTG       +$20.37         +0.2877         0           1 inv / $37.63                Pure Storage Inc
+  * RACE       +$13.04         +0.0362         0           1 inv / $97.08                Ferrari NV
+  * MAERSKB.CO $-1.50          0.0000          0           1 inv / $2.52                 A P Moller Maersk
+
+====================================================================================================
+ COMPARANDO: 20251209 vs 20251209
+====================================================================================================
+
+[+] No hay nuevas posiciones.
+
+[-] POSICIONES CERRADAS (1):
+    Símbolo    Invrs   Era Invert.  Unidades   Nombre
+  - BHP        1       $1.97        0.0367     BHP Group Ltd ADR
+
+[*] CAMBIOS DETECTADOS (23):
+    Símbolo    Dif. Inv ($)    Dif. Uni        Dif. Invrs   Totales Actuales               Nombre
+  * SPOT       $-42.81         -0.0771         -1          1 inv / $4.47                 Spotify Technologies SA
+  * FCX        +$1.98          +0.0446         0           2 inv / $645.34               Freeport-McMoRan Inc
+  * V          $-17.55         -0.0501         0           4 inv / $165.96               Visa
+  * GE         +$2.74          +0.0095         0           1 inv / $30.35                General Electric Co
+  * PALL       +$9.70          +0.0709         0           1 inv / $195.66               Abrdn Palladium ETF Trust
+  * META       $-4.96          -0.0100         -1          13 inv / $1224.15             Meta Platforms Inc
+  * BKNG       $-1.97          0.0000          0           2 inv / $97.42                Booking Holdings Inc
+  * AXP        $-4.63          -0.0127         -1          3 inv / $20.32                American Express CO
+  * AAL        $-1.39          -0.1342         0           2 inv / $14.99                American Airlines Group Inc
+  * HOG        +$2.47          +0.1090         0           1 inv / $13.55                Harley-Davidson Inc
+  * CNDX.L     +$1.97          +0.0100         +1          2 inv / $95.95                iShares NASDAQ 100 UCITS ETF usd
+  * ADBE       +$12.78         +0.0369         0           4 inv / $226.62               Adobe Systems Inc
+  * MELI       +$7.59          +0.0037         0           5 inv / $226.27               MercadoLibre Inc
+  * JNJ        +$12.53         +0.0623         0           1 inv / $29.80                Johnson & Johnson
+  * DAL        $-1.29          -0.0225         0           1 inv / $4.08                 Delta Air Lines Inc (DE)
+  * C          +$6.85          +0.0634         0           2 inv / $90.47                Citigroup
+  * BRK.B      $-29.49         -0.0597         -1          3 inv / $168.15               Berkshire Hathaway Inc
+  * ABNB       $-2.97          -0.0243         0           3 inv / $60.97                Airbnb Inc
+  * NFLX       $-18.35         -0.1012         0           4 inv / $180.73               Netflix, Inc.
+  * UBER       +$9.98          +0.1108         0           4 inv / $142.05               Uber Technologies Inc.
+  * RACE       +$13.15         +0.0350         0           1 inv / $84.04                Ferrari NV
+  * SNOW       $-13.56         -0.0577         -1          1 inv / $1.00                 Snowflake Inc.
+  * MA         $-8.32          -0.0112         0           4 inv / $216.42               Mastercard

@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Horarios de Buses</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- HEADER CON LOGO -->
+        <div class="header">
+            <div class="header-content">
+                <i class="fas fa-bus header-icon"></i>
+                <h1>Sistema de Horarios de Buses</h1>
+            </div>
+        </div>
+
+        <div class="tabs">
+            <button class="tab-button active" onclick="openTab('horarios')">
+                <i class="fas fa-clock"></i> Horarios
+            </button>
+            <button class="tab-button" onclick="openTab('inversionistas')">
+                <i class="fas fa-chart-bar"></i> Inversionistas
+            </button>
+            <button class="tab-button" onclick="openTab('diferencias')">
+                <i class="fas fa-sync-alt"></i> Diferencias
+            </button>
+            <button class="tab-button" onclick="openTab('dominios')">
+                <i class="fas fa-globe"></i> Dominios
+            </button>
+        </div>
+
+        <div id="horarios" class="tab-content active">
+            <h2><i class="fas fa-bus"></i> Horarios de Buses</h2>
+            <div class="filter">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="filterInput" placeholder="Buscar por ruta..." onkeyup="filterTable()">
+                </div>
+                <div class="filter-controls">
+                    <button class="filter-button" onclick="clearFilter()">
+                        <i class="fas fa-times"></i> Limpiar
+                    </button>
+                    <span class="visitas-counter">
+                        <i class="fas fa-eye"></i> Visitas: <span id="contadorVisitas">0</span>
+                    </span>
+                    <span class="rutas-counter">
+                        <i class="fas fa-list"></i> <span id="rutasCounter">Total: 0</span>
+                    </span>
+                </div>
+            </div>
+            <div class="table-wrapper">
+                <table id="busTable">
+                    <thead>
+                      
+
+                            <tr>
+    <th><i class="fas fa-building"></i><span>EMPRESA</span></th>
+    <th><i class="fas fa-map-pin"></i><span>TERMINAL ORIGEN</span></th>
+    <th><i class="fas fa-map-pin"></i><span>TERMINAL DESTINO</span></th>
+    <th><i class="fas fa-clock"></i><span>HORA DE SALIDA</span></th>
+    <th><i class="fas fa-calendar-alt"></i><span>DÍAS DE LA SEMANA</span></th>
+</tr>
+
+
+                   
+                    </thead>
+                    <tbody id="busTableBody">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="inversionistas" class="tab-content">
+            <h2><i class="fas fa-chart-bar"></i> Información para Inversionistas</h2>
+            
+            <div class="file-selector">
+                <label for="fileSelect"><i class="fas fa-folder-open"></i> Selecciona un archivo:</label>
+                <select id="fileSelect" onchange="loadSelectedFile()">
+                    <option value="">Cargando archivos...</option>
+                </select>
+                <button class="refresh-button" onclick="loadInversionistaFiles()">
+                    <i class="fas fa-sync-alt"></i> Actualizar
+                </button>
+            </div>
+
+            <div class="filter">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="filterInversionistas" placeholder="Buscar símbolo, nombre o operación..." onkeyup="filterInversionistasContent()">
+                </div>
+                <div class="filter-controls">
+                    <button class="filter-button" onclick="clearInversionistasFilter()">
+                        <i class="fas fa-times"></i> Limpiar
+                    </button>
+                </div>
+            </div>
+
+            <div class="file-info">
+                <p id="fileInfo"><i class="fas fa-spinner fa-spin"></i> Cargando archivos...</p>
+            </div>
+
+            <div class="records-table-container" id="inversionistasContent">
+                <p class="loading"><i class="fas fa-spinner fa-spin"></i> Cargando contenido...</p>
+            </div>
+        </div>
+
+        <div id="diferencias" class="tab-content">
+            <h2><i class="fas fa-sync-alt"></i> Reporte de Diferencias</h2>
+            <div class="filter">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="filterDiferencias" placeholder="Buscar símbolo, nombre o cambio..." onkeyup="filterDiferenciasContent()">
+                </div>
+                <div class="filter-controls">
+                    <button class="filter-button" onclick="clearDiferenciasFilter()">
+                        <i class="fas fa-times"></i> Limpiar
+                    </button>
+                </div>
+            </div>
+            <div class="file-info">
+                <p id="diffFileInfo"><i class="fas fa-spinner fa-spin"></i> Esperando carga...</p>
+                <button class="refresh-button" onclick="loadDifferencesFile()">
+                    <i class="fas fa-sync-alt"></i> Actualizar
+                </button>
+            </div>
+            <div class="diferencias-content" id="diferenciasContent">
+                <p class="loading"><i class="fas fa-spinner fa-spin"></i> Cargando contenido...</p>
+            </div>
+        </div>
+
+        <div id="dominios" class="tab-content">
+            <h2><i class="fas fa-globe"></i> Lista de Dominios</h2>
+            
+            <div class="filter">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="filterDominios" placeholder="Buscar dominios..." onkeyup="filterDominios()">
+                </div>
+                <div class="filter-controls">
+                    <button class="filter-button" onclick="clearDominiosFilter()">
+                        <i class="fas fa-times"></i> Limpiar
+                    </button>
+                    <button class="refresh-button" onclick="loadDominiosFile()">
+                        <i class="fas fa-sync-alt"></i> Actualizar
+                    </button>
+                </div>
+            </div>
+
+            <div class="file-info">
+                <p id="dominiosInfo"><i class="fas fa-spinner fa-spin"></i> Cargando dominios...</p>
+            </div>
+
+            <div class="dominios-container">
+                <div id="dominiosList" class="dominios-list">
+                    <p class="loading"><i class="fas fa-spinner fa-spin"></i> Cargando dominios...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let originalFileContent = '';
+        let originalDiffContent = '';
+        let originalDominios = [];
+        let filteredDominios = [];
+        let availableFiles = [];
+        let allBusSchedules = [];
+
+        function openTab(tabName) {
+            const tabContents = document.getElementsByClassName('tab-content');
+            for (let i = 0; i < tabContents.length; i++) {
+                tabContents[i].classList.remove('active');
+            }
+
+            const tabButtons = document.getElementsByClassName('tab-button');
+            for (let i = 0; i < tabButtons.length; i++) {
+                tabButtons[i].classList.remove('active');
+            }
+
+            document.getElementById(tabName).classList.add('active');
+            event.currentTarget.classList.add('active');
+        }
+
+        function loadInversionistaFiles() {
+            fetch('https://api.teddybarza.com/get_inversionista_files')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        availableFiles = data.files;
+                        const fileSelect = document.getElementById('fileSelect');
+                        fileSelect.innerHTML = '';
+
+                        if (availableFiles.length === 0) {
+                            fileSelect.innerHTML = '<option value="">No se encontraron archivos</option>';
+                            document.getElementById('fileInfo').innerHTML = '<i class="fas fa-inbox"></i> No hay archivos disponibles';
+                            return;
+                        }
+
+                        availableFiles.forEach((file, index) => {
+                            const option = document.createElement('option');
+                            option.value = index;
+                            option.textContent = `${file.filename} (${file.timestamp})`;
+                            if (index === 0) option.selected = true;
+                            fileSelect.appendChild(option);
+                        });
+
+                        loadSelectedFile();
+                    } else {
+                        document.getElementById('fileInfo').innerHTML = '<i class="fas fa-exclamation-triangle"></i> Error al cargar archivos: ' + data.message;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    document.getElementById('fileInfo').innerHTML = '<i class="fas fa-exclamation-triangle"></i> Error de conexión al cargar archivos';
+                });
+        }
+
+        function loadSelectedFile() {
+            const fileSelect = document.getElementById('fileSelect');
+            const selectedIndex = fileSelect.value;
+
+            if (selectedIndex === '' || availableFiles.length === 0) {
+                return;
+            }
+
+            const selectedFile = availableFiles[selectedIndex];
+            
+            fetch('https://api.teddybarza.com/get_inversionista_file', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ filename: selectedFile.filename })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    originalFileContent = data.content;
+                    
+                    const headerMatch = data.content.match(/FECHA DE REPORTE: ([\d\-]+).*?CARTERAS ACTIVAS: (\d+)/);
+                    let headerInfo = `<i class="fas fa-file"></i> Archivo: ${selectedFile.filename}`;
+                    if (headerMatch) {
+                        headerInfo = `<i class="fas fa-calendar"></i> Fecha: ${headerMatch[1]} | <i class="fas fa-briefcase"></i> Carteras Activas: ${headerMatch[2]} | <i class="fas fa-clock"></i> Última actualización: ${selectedFile.timestamp}`;
+                    }
+                    document.getElementById('fileInfo').innerHTML = headerInfo;
+                    
+                    filterInversionistasContent();
+                    document.getElementById('filterInversionistas').value = '';
+                } else {
+                    document.getElementById('inversionistasContent').innerHTML = 
+                        '<p class="no-results"><i class="fas fa-inbox"></i> Error al cargar el archivo: ' + data.message + '</p>';
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById('inversionistasContent').innerHTML = 
+                    '<p class="no-results"><i class="fas fa-exclamation-triangle"></i> Error de conexión al cargar el archivo</p>';
+            });
+        }
+
+        function parseInversionistasTable(content) {
+            const lines = content.split('\n');
+            const data = [];
+            let isTableData = false;
+            let headerFound = false;
+            
+            for (let i = 0; i < lines.length; i++) {
+                const line = lines[i];
+                
+                if (line.includes('Símbolo') && line.includes('Unidades') && line.includes('Invertido')) {
+                    headerFound = true;
+                    isTableData = true;
+                    continue;
+                }
+                
+                if (line.match(/^-{20,}$/) && isTableData) {
+                    continue;
+                }
+                
+                if (line.match(/^={20,}$/) && isTableData) {
+                    isTableData = false;
+                    continue;
+                }
+                
+                if (isTableData && headerFound && line.trim().length > 0) {
+                    if (!line.match(/^-{5,}$/) && !line.match(/^={5,}$/)) {
+                        const parts = line.trim().split(/\s{2,}/);
+                        
+                        if (parts.length >= 5) {
+                            data.push({
+                                simbolo: parts[0],
+                                unidades: parts[1],
+                                invertido: parts[2],
+                                inversionistas: parts[3],
+                                operacion: parts[4],
+                                nombre: parts.slice(5).join(' ')
+                            });
+                        }
+                    }
+                }
+            }
+            
+            return data;
+        }
+
+        function renderInversionistasTable(data) {
+            const container = document.getElementById('inversionistasContent');
+            
+            if (data.length === 0) {
+                container.innerHTML = '<p class="no-results"><i class="fas fa-inbox"></i> No hay registros</p>';
+                return;
+            }
+            
+            let html = '<div class="records-table-container inversionistas-table">';
+            html += '<div class="records-table">';
+            
+            html += '<div class="record-row header-row">';
+            html += '<div class="record-cell header-cell"><i class="fas fa-tag"></i> Símbolo</div>';
+            html += '<div class="record-cell header-cell"><i class="fas fa-boxes"></i> Unidades</div>';
+            html += '<div class="record-cell header-cell"><i class="fas fa-dollar-sign"></i> Invertido</div>';
+            html += '<div class="record-cell header-cell"><i class="fas fa-users"></i> Inv.</div>';
+            html += '<div class="record-cell header-cell"><i class="fas fa-exchange-alt"></i> Operación</div>';
+            html += '<div class="record-cell header-cell"><i class="fas fa-info-circle"></i> Nombre</div>';
+            html += '</div>';
+            
+            data.forEach(row => {
+                html += '<div class="record-row">';
+                html += `<div class="record-cell">${row.simbolo}</div>`;
+                html += `<div class="record-cell">${row.unidades}</div>`;
+                html += `<div class="record-cell">${row.invertido}</div>`;
+                html += `<div class="record-cell">${row.inversionistas}</div>`;
+                
+                const operacionClass = row.operacion.toLowerCase() === 'comprar' ? 'operacion-compra' : 'operacion-venta';
+                const operacionIcon = row.operacion.toLowerCase() === 'comprar' ? '<i class="fas fa-arrow-down"></i>' : '<i class="fas fa-arrow-up"></i>';
+                html += `<div class="record-cell ${operacionClass}">${operacionIcon} ${row.operacion}</div>`;
+                
+                html += `<div class="record-cell">${row.nombre}</div>`;
+                html += '</div>';
+            });
+            
+            html += '</div></div>';
+            container.innerHTML = html;
+        }
+
+        function filterInversionistasContent() {
+            const filterValue = document.getElementById('filterInversionistas').value.toLowerCase().trim();
+            
+            if (filterValue.length === 0) {
+                const data = parseInversionistasTable(originalFileContent);
+                renderInversionistasTable(data);
+                return;
+            }
+            
+            const searchTerms = filterValue.split(/\s+/).filter(term => term.length > 0);
+            const allData = parseInversionistasTable(originalFileContent);
+            
+            const filteredData = allData.filter(row => {
+                const rowText = (
+                    row.simbolo + ' ' +
+                    row.unidades + ' ' +
+                    row.invertido + ' ' +
+                    row.inversionistas + ' ' +
+                    row.operacion + ' ' +
+                    row.nombre
+                ).toLowerCase();
+                
+                return searchTerms.every(term => rowText.includes(term));
+            });
+            
+            renderInversionistasTable(filteredData);
+        }
+
+        function clearInversionistasFilter() {
+            document.getElementById('filterInversionistas').value = '';
+            filterInversionistasContent();
+        }
+
+        function parseDifferencesContent(content) {
+            const lines = content.split('\n');
+            const comparisons = [];
+            let currentComparison = null;
+            let currentSection = null;
+            let currentData = [];
+
+            for (let i = 0; i < lines.length; i++) {
+                const line = lines[i];
+
+                if (line.includes('COMPARANDO:')) {
+                    if (currentComparison) {
+                        if (currentData.length > 0 && currentSection) {
+                            currentSection.data = currentData;
+                            currentComparison.sections.push(currentSection);
+                        }
+                        comparisons.push(currentComparison);
+                    }
+                    
+                    currentComparison = {
+                        header: line.trim(),
+                        sections: []
+                    };
+                    currentSection = null;
+                    currentData = [];
+                }
+                else if (line.includes('[+]') || line.includes('[-]') || line.includes('[*]')) {
+                    if (currentData.length > 0 && currentSection) {
+                        currentSection.data = currentData;
+                        currentComparison.sections.push(currentSection);
+                    }
+
+                    let symbol = '';
+                    let sectionClass = '';
+                    let title = line.trim();
+
+                    if (line.includes('[+]')) {
+                        symbol = '+';
+                        sectionClass = 'new-positions';
+                    } else if (line.includes('[-]')) {
+                        symbol = '-';
+                        sectionClass = 'closed-positions';
+                    } else if (line.includes('[*]')) {
+                        symbol = '*';
+                        sectionClass = 'changes';
+                    }
+
+                    currentSection = {
+                        type: 'section',
+                        title: title,
+                        symbol: symbol,
+                        sectionClass: sectionClass,
+                        data: []
+                    };
+                    currentData = [];
+                }
+                else if (currentSection && line.trim().length > 0) {
+                    if (!line.match(/^=+$/) && !line.match(/^-+$/)) {
+                        currentData.push(line);
+                    }
+                }
+            }
+
+            if (currentComparison) {
+                if (currentData.length > 0 && currentSection) {
+                    currentSection.data = currentData;
+                    currentComparison.sections.push(currentSection);
+                }
+                comparisons.push(currentComparison);
+            }
+
+            return comparisons;
+        }
+
+        function renderDiferencias(content) {
+            const diferenciasContent = document.getElementById('diferenciasContent');
+            const comparisons = parseDifferencesContent(content);
+
+            if (comparisons.length === 0) {
+                diferenciasContent.innerHTML = '<p class="no-results"><i class="fas fa-inbox"></i> No hay registros</p>';
+                return;
+            }
+
+            let html = '';
+
+            comparisons.forEach((comparison, compIdx) => {
+                html += `<div class="comparison-block">
+                    <div class="comparison-header"><i class="fas fa-exchange-alt"></i> ${comparison.header}</div>`;
+
+                comparison.sections.forEach(section => {
+                    if (section.title.includes('No hay') || section.title.includes('Sin cambios')) {
+                        html += `<div class="diff-section ${section.sectionClass}">
+                            <div class="diff-section-title">${section.title}</div>
+                        </div>`;
+                    } else {
+                        html += `<div class="diff-section ${section.sectionClass}">
+                            <div class="diff-section-title">${section.title}</div>
+                            <div class="records-table-container">
+                                <div class="records-table">`;
+
+                        section.data.forEach((row, idx) => {
+                            const cells = row.trim().split(/\s{2,}/).filter(c => c.trim());
+                            if (cells.length > 0) {
+                                html += '<div class="record-row">';
+                                cells.forEach(cell => {
+                                    html += `<div class="record-cell">${cell}</div>`;
+                                });
+                                html += '</div>';
+                            }
+                        });
+
+                        html += `</div></div></div>`;
+                    }
+                });
+
+                html += '</div>';
+            });
+
+            diferenciasContent.innerHTML = html;
+        }
+
+        function filterDiferenciasContent() {
+            const filterValue = document.getElementById('filterDiferencias').value.toLowerCase().trim();
+            
+            if (filterValue.length === 0) {
+                renderDiferencias(originalDiffContent);
+                return;
+            }
+
+            const searchTerms = filterValue.split(/\s+/).filter(term => term.length > 0);
+            const comparisons = parseDifferencesContent(originalDiffContent);
+            let filteredComparisons = [];
+
+            comparisons.forEach(comparison => {
+                let filteredSections = [];
+
+                comparison.sections.forEach(section => {
+                    let filteredData = [];
+
+                    section.data.forEach(row => {
+                        const rowLower = row.toLowerCase();
+                        const matches = searchTerms.every(term => rowLower.includes(term));
+                        if (matches) {
+                            filteredData.push(row);
+                        }
+                    });
+
+                    if (filteredData.length > 0) {
+                        filteredSections.push({
+                            ...section,
+                            data: filteredData
+                        });
+                    }
+                });
+
+                if (filteredSections.length > 0) {
+                    filteredComparisons.push({
+                        ...comparison,
+                        sections: filteredSections
+                    });
+                }
+            });
+
+            const diferenciasContent = document.getElementById('diferenciasContent');
+            
+            if (filteredComparisons.length === 0) {
+                diferenciasContent.innerHTML = '<p class="no-results"><i class="fas fa-inbox"></i> No se encontraron resultados para: <strong>' + filterValue + '</strong></p>';
+                return;
+            }
+
+            let html = '';
+            filteredComparisons.forEach((comparison, compIdx) => {
+                html += `<div class="comparison-block">
+                    <div class="comparison-header"><i class="fas fa-exchange-alt"></i> ${comparison.header}</div>`;
+
+                comparison.sections.forEach(section => {
+                    if (section.data.length > 0) {
+                        html += `<div class="diff-section ${section.sectionClass}">
+                            <div class="diff-section-title">${section.title}</div>
+                            <div class="records-table-container">
+                                <div class="records-table">`;
+
+                        section.data.forEach((row, idx) => {
+                            const cells = row.trim().split(/\s{2,}/).filter(c => c.trim());
+                            if (cells.length > 0) {
+                                html += '<div class="record-row">';
+                                cells.forEach(cell => {
+                                    html += `<div class="record-cell">${cell}</div>`;
+                                });
+                                html += '</div>';
+                            }
+                        });
+
+                        html += `</div></div></div>`;
+                    }
+                });
+
+                html += '</div>';
+            });
+
+            diferenciasContent.innerHTML = html;
+        }
+
+        function clearDiferenciasFilter() {
+            document.getElementById('filterDiferencias').value = '';
+            filterDiferenciasContent();
+        }
+
+        function loadDifferencesFile() {
+            fetch('https://api.teddybarza.com/get_differences_file')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        document.getElementById('diffFileInfo').innerHTML = 
+                            `<i class="fas fa-clock"></i> Última actualización: ${data.timestamp}`;
+                        originalDiffContent = data.content;
+                        renderDiferencias(data.content);
+                        document.getElementById('filterDiferencias').value = '';
+                    } else {
+                        document.getElementById('diferenciasContent').innerHTML = 
+                            '<p class="no-results"><i class="fas fa-exclamation-triangle"></i> Error al cargar el archivo: ' + data.message + '</p>';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    document.getElementById('diferenciasContent').innerHTML = 
+                        '<p class="no-results"><i class="fas fa-exclamation-triangle"></i> Error de conexión al cargar el reporte de diferencias</p>';
+                });
+        }
+
+        function loadDominiosFile() {
+            fetch('https://api.teddybarza.com/get_dominios_file')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        document.getElementById('dominiosInfo').innerHTML = 
+                            `<i class="fas fa-globe"></i> Total de dominios: ${data.totalDominios} | <i class="fas fa-clock"></i> Última actualización: ${data.timestamp}`;
+                        
+                        originalDominios = data.dominios;
+                        filteredDominios = originalDominios;
+                        document.getElementById('filterDominios').value = '';
+                        renderDominios(filteredDominios);
+                    } else {
+                        document.getElementById('dominiosInfo').innerHTML = 
+                            '<i class="fas fa-exclamation-triangle"></i> Error al cargar dominios: ' + data.message;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    document.getElementById('dominiosInfo').innerHTML = 
+                        '<i class="fas fa-exclamation-triangle"></i> Error de conexión al cargar dominios';
+                });
+        }
+
+        function renderDominios(dominios) {
+            const dominiosList = document.getElementById('dominiosList');
+            
+            if (dominios.length === 0) {
+                dominiosList.innerHTML = '<p class="no-results"><i class="fas fa-inbox"></i> No se encontraron dominios</p>';
+                return;
+            }
+
+            dominiosList.innerHTML = dominios.map(dominio => `
+                <div class="dominio-item">
+                    <a href="http://${dominio}" target="_blank" rel="noopener noreferrer" class="dominio-link">
+                        <i class="fas fa-link"></i> ${dominio}
+                    </a>
+                </div>
+            `).join('');
+        }
+
+        function filterDominios() {
+            const filterValue = document.getElementById('filterDominios').value.toLowerCase();
+            const searchTerms = filterValue.split(" ").filter(term => term.trim() !== "");
+
+            if (searchTerms.length === 0) {
+                filteredDominios = originalDominios;
+            } else {
+                filteredDominios = originalDominios.filter(dominio => {
+                    const dominioLower = dominio.toLowerCase();
+                    return searchTerms.every(term => dominioLower.includes(term));
+                });
+            }
+
+            renderDominios(filteredDominios);
+        }
+
+        function clearDominiosFilter() {
+            document.getElementById('filterDominios').value = '';
+            filterDominios();
+        }
+
+        function loadBusSchedules() {
+            fetch('https://api.teddybarza.com/fetch_schedules')
+                .then(response => response.json())
+                .then(data => {
+                    allBusSchedules = data;
+                    const tableBody = document.getElementById('busTableBody');
+                    tableBody.innerHTML = '';
+
+                    data.forEach(schedule => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${schedule.EMPRESA}</td>
+                            <td>${schedule.TERMINAL_ORIGEN}</td>
+                            <td>${schedule.TERMINAL_DESTINO}</td>
+                            <td>${schedule.HORA_SALIDA}</td>
+                            <td>${schedule.DIAS_SEMANA}</td>
+                        `;
+                        tableBody.appendChild(row);
+                    });
+                    
+                    updateRoutesCounter();
+                })
+                .catch(error => console.error('Error al cargar horarios:', error));
+        }
+
+        function filterTable() {
+            const input = document.getElementById('filterInput');
+            const filterValue = input.value.toLowerCase();
+            
+            const searchTerms = filterValue.split(" ").filter(term => term.trim() !== "");
+
+            const table = document.getElementById('busTable');
+            const tr = table.getElementsByTagName('tr');
+
+            for (let i = 1; i < tr.length; i++) {
+                const td = tr[i].getElementsByTagName('td');
+                let rowText = "";
+
+                for (let j = 0; j < td.length; j++) {
+                    if (td[j]) {
+                        rowText += " " + (td[j].textContent || td[j].innerText).toLowerCase();
+                    }
+                }
+
+                const allTermsMatch = searchTerms.every(term => rowText.indexOf(term) > -1);
+                tr[i].style.display = allTermsMatch ? "" : "none";
+            }
+            
+            updateRoutesCounter();
+        }
+
+        function updateRoutesCounter() {
+            const table = document.getElementById('busTable');
+            const tr = table.getElementsByTagName('tr');
+            let visibleCount = 0;
+            let totalCount = 0;
+
+            for (let i = 1; i < tr.length; i++) {
+                totalCount++;
+                if (tr[i].style.display !== 'none') {
+                    visibleCount++;
+                }
+            }
+            
+            const counterElement = document.getElementById('rutasCounter');
+            if (counterElement) {
+                if (visibleCount === totalCount) {
+                    counterElement.textContent = `Total: ${totalCount}`;
+                } else {
+                    counterElement.textContent = `Rutas: ${visibleCount} de ${totalCount}`;
+                }
+            }
+        }
+
+        function clearFilter() {
+            document.getElementById('filterInput').value = '';
+            filterTable();
+        }
+
+        function updateVisitCounter() {
+            fetch('https://api.teddybarza.com/update_visits', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'}
+            })
+            .then(response => response.json())
+            .then(data => {
+                const visitasElement = document.getElementById('contadorVisitas');
+                visitasElement.textContent = data.visits;
+            })
+            .catch(error => console.error('Error al actualizar contador de visitas:', error));
+        }
+
+        window.onload = function() {
+            loadBusSchedules();
+            updateVisitCounter();
+            loadInversionistaFiles(); 
+            loadDifferencesFile();
+            loadDominiosFile();
+        };
+    </script>
+</body>
+</html>

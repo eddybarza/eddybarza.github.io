@@ -3,459 +3,134 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Visualizador en Tiempo Real - Reporte Drive</title>
+    <title>Reporte</title>
     <style>
-        /* Estilos anteriores se mantienen igual */
         * { box-sizing: border-box; font-family: 'Segoe UI', monospace; }
         body { background: #0f172a; color: #f1f5f9; margin: 0; padding: 20px; }
         .container { max-width: 1400px; margin: 0 auto; background: #1e293b; 
                     border-radius: 12px; padding: 25px; border: 1px solid #334155; }
-        h1 { color: #60a5fa; border-bottom: 2px solid #3b82f6; padding-bottom: 10px; }
-        .controls { background: #1a202c; padding: 20px; border-radius: 10px; 
-                   margin-bottom: 20px; display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
-        button { background: #3b82f6; color: white; border: none; padding: 12px 24px; 
-                border-radius: 8px; cursor: pointer; font-weight: bold; transition: all 0.3s; }
-        button:hover { background: #2563eb; transform: translateY(-2px); }
+        
         #output { background: #0f172a; border: 1px solid #334155; border-radius: 8px; 
-                 padding: 20px; margin-top: 20px; white-space: pre-wrap; 
+                 padding: 20px; white-space: pre-wrap; 
                  font-family: 'Monaco', monospace; line-height: 1.6; font-size: 13px;
-                 max-height: 75vh; overflow-y: auto; }
-        .status-bar { display: flex; justify-content: space-between; background: #1a202c; 
-                     padding: 10px 15px; border-radius: 8px; margin-bottom: 15px; font-size: 14px; }
+                 max-height: 90vh; overflow-y: auto; }
+        
         .new { color: #10b981; font-weight: bold; }
         .closed { color: #ef4444; font-weight: bold; }
         .changed { color: #60a5fa; font-weight: bold; }
-        .auto-refresh { display: flex; align-items: center; gap: 10px; background: #1a202c; 
-                       padding: 10px 15px; border-radius: 8px; margin-top: 15px; }
+        
         .highlight { animation: highlight 2s ease; }
         @keyframes highlight {
             0% { background-color: rgba(59, 130, 246, 0.5); }
             100% { background-color: transparent; }
         }
         .comparison { border-left: 4px solid #8b5cf6; padding-left: 15px; margin: 20px 0; }
-        @media (max-width: 768px) {
-            .controls { flex-direction: column; align-items: stretch; }
-            button { width: 100%; }
-        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>📈 Reporte en Tiempo Real - Google Drive</h1>
-        
-        <div class="status-bar">
-            <div>🔄 Última actualización: <span id="lastUpdate">Nunca</span></div>
-            <div>📊 Tamaño: <span id="fileSize">-</span> | Líneas: <span id="lineCount">-</span></div>
-            <div>🔗 ID: <code>16M0sXoImDBXQs9_9RUr5uypUr3qOngxU</code></div>
-        </div>
-        
-        <div class="controls">
-            <button onclick="forceRefresh()">🔄 Actualizar Ahora (Sin Caché)</button>
-            <button onclick="startAutoRefresh()" id="autoRefreshBtn">⏱️ Auto-Refresh: OFF</button>
-            <button onclick="formatReport()">🎨 Formatear</button>
-            <button onclick="toggleRawView()" id="rawViewBtn">📄 Vista Raw</button>
-            
-            <div style="margin-left: auto;">
-                <label>Intervalo: 
-                    <select id="refreshInterval" onchange="updateInterval()">
-                        <option value="5000">5 seg</option>
-                        <option value="10000" selected>10 seg</option>
-                        <option value="30000">30 seg</option>
-                        <option value="60000">60 seg</option>
-                    </select>
-                </label>
-            </div>
-        </div>
-        
         <div id="output">Cargando reporte...</div>
-        
-        <div class="auto-refresh">
-            <div>🕒 Próxima actualización automática: <span id="nextRefresh">--:--</span></div>
-            <div style="margin-left: auto;">📡 Proxy: <span id="proxyStatus">Probando...</span></div>
-        </div>
     </div>
 
     <script>
-        // CONFIGURACIÓN
         const DRIVE_ID = '16M0sXoImDBXQs9_9RUr5uypUr3qOngxU';
+        const REFRESH_TIME = 10000; 
         
-        // Lista de proxies CORS (en orden de preferencia)
         const PROXY_LIST = [
-            {
-                name: 'CorsProxy',
-                url: 'https://corsproxy.io/?',
-                encode: true
-            },
-            {
-                name: 'AllOrigins',
-                url: 'https://api.allorigins.win/raw?url=',
-                encode: true
-            },
-            {
-                name: 'CodeTabs',
-                url: 'https://api.codetabs.com/v1/proxy?quest=',
-                encode: true
-            },
-            {
-                name: 'ThingProxy',
-                url: 'https://thingproxy.freeboard.io/fetch/',
-                encode: false
-            }
+            { name: 'CorsProxy', url: 'https://corsproxy.io/?', encode: true },
+            { name: 'AllOrigins', url: 'https://api.allorigins.win/raw?url=', encode: true },
+            { name: 'CodeTabs', url: 'https://api.codetabs.com/v1/proxy?quest=', encode: true }
         ];
         
-        let autoRefreshInterval = null;
-        let refreshTime = 10000; // 10 segundos por defecto
-        let isRawView = false;
         let lastContentHash = '';
-        let currentProxyIndex = 0; // Índice del proxy actual
+        let currentProxyIndex = 0;
         
-        // Inicializar
         document.addEventListener('DOMContentLoaded', () => {
-            updateDisplayTime();
-            forceRefresh(); // Cargar inmediatamente al abrir
-            
-            // Actualizar hora cada segundo
-            setInterval(updateDisplayTime, 1000);
+            forceRefresh();
+            setInterval(forceRefresh, REFRESH_TIME);
         });
         
-        // Fuerza una actualización SIN CACHÉ
         async function forceRefresh() {
-            console.log('Forzando actualización sin caché...');
-            
             const output = document.getElementById('output');
             const timestamp = new Date().getTime();
-            
-            // Construir URL de Drive con timestamp para evitar caché
             const driveUrl = `https://drive.google.com/uc?export=download&id=${DRIVE_ID}&_t=${timestamp}`;
-            
-            // Mostrar estado de carga
-            output.innerHTML = '<div style="text-align:center;padding:20px;color:#60a5fa;">⏳ Cargando versión más reciente...</div>';
-            document.getElementById('lastUpdate').textContent = new Date().toLocaleTimeString();
-            
-            // Intentar con el proxy actual, si falla probar con los demás
-            let success = false;
-            let lastError = null;
             
             for (let i = 0; i < PROXY_LIST.length; i++) {
                 const proxyIndex = (currentProxyIndex + i) % PROXY_LIST.length;
                 const proxy = PROXY_LIST[proxyIndex];
                 
                 try {
-                    const proxyUrl = proxy.encode ? 
-                        proxy.url + encodeURIComponent(driveUrl) : 
-                        proxy.url + driveUrl;
+                    const proxyUrl = proxy.encode ? proxy.url + encodeURIComponent(driveUrl) : proxy.url + driveUrl;
+                    const response = await fetch(proxyUrl, { cache: 'no-store' });
                     
-                    console.log(`Intentando con proxy: ${proxy.name}`);
-                    document.getElementById('proxyStatus').textContent = `Probando: ${proxy.name}`;
-                    
-                    const response = await fetch(proxyUrl, {
-                        method: 'GET',
-                        headers: {
-                            'Cache-Control': 'no-cache, no-store, must-revalidate',
-                            'Pragma': 'no-cache',
-                            'Expires': '0'
-                        },
-                        cache: 'no-store'
-                    });
-                    
-                    if (!response.ok) {
-                        throw new Error(`HTTP ${response.status}`);
-                    }
+                    if (!response.ok) throw new Error();
                     
                     const text = await response.text();
-                    
-                    // Verificar que el contenido sea válido (no sea una página de error)
-                    if (text.length < 50 && text.includes('Error')) {
-                        throw new Error('El proxy devolvió una página de error');
-                    }
-                    
                     const hash = await generateHash(text);
                     
-                    // Verificar si el contenido realmente cambió
                     if (hash !== lastContentHash) {
                         lastContentHash = hash;
-                        updateFileInfo(text);
-                        
-                        if (isRawView) {
-                            output.textContent = text;
-                        } else {
-                            output.innerHTML = formatContent(text);
-                            highlightNewChanges();
-                        }
-                        
-                        showNotification(`✅ Reporte actualizado (via ${proxy.name})`, 'success');
-                        console.log(`Contenido actualizado via ${proxy.name} - Hash:`, hash.substring(0, 8));
-                    } else {
-                        showNotification('ℹ️ Sin cambios detectados', 'info');
+                        output.innerHTML = formatContent(text);
+                        highlightNewChanges();
                     }
                     
-                    // Si llegamos aquí, este proxy funcionó
-                    success = true;
-                    currentProxyIndex = proxyIndex; // Usar este proxy para la próxima
-                    document.getElementById('proxyStatus').textContent = proxy.name;
-                    document.getElementById('proxyStatus').style.color = '#10b981';
-                    
-                    break; // Salir del bucle
-                    
+                    currentProxyIndex = proxyIndex;
+                    break;
                 } catch (error) {
-                    lastError = error;
-                    console.warn(`Proxy ${proxy.name} falló:`, error);
-                    
-                    // Mostrar que este proxy falló
-                    document.getElementById('proxyStatus').textContent = `${proxy.name} falló`;
-                    document.getElementById('proxyStatus').style.color = '#ef4444';
-                    
-                    // Esperar un poco antes de probar el siguiente proxy
-                    await new Promise(resolve => setTimeout(resolve, 500));
+                    continue; // Probar siguiente proxy en silencio
                 }
             }
-            
-            if (!success) {
-                // Todos los proxies fallaron
-                output.innerHTML = `<div style="color:#ef4444;padding:20px;">
-                    ❌ Todos los proxies fallaron: ${lastError.message}<br><br>
-                    <strong>Posibles soluciones:</strong><br>
-                    1. Verifica tu conexión a internet<br>
-                    2. Asegúrate que el archivo esté compartido como "Cualquier persona con el enlace"<br>
-                    3. Intenta cargar la página HTTPS directamente: 
-                       <a href="https://drive.google.com/uc?export=download&id=${DRIVE_ID}" target="_blank" style="color:#60a5fa;">Enlace directo</a><br><br>
-                    <button onclick="forceRefresh()" style="background:#3b82f6;">Reintentar</button>
-                    <button onclick="tryDirect()" style="background:#8b5cf6;">Intentar sin proxy (puede fallar por CORS)</button>
-                </div>`;
-                showNotification('❌ Todos los proxies fallaron', 'error');
-                document.getElementById('proxyStatus').textContent = 'Todos fallaron';
-            }
         }
-        
-        // Intentar cargar directamente sin proxy (puede fallar por CORS)
-        async function tryDirect() {
-            showNotification('⚠️ Intentando carga directa (puede fallar por CORS)', 'info');
-            
-            const driveUrl = `https://drive.google.com/uc?export=download&id=${DRIVE_ID}&_t=${Date.now()}`;
-            
-            try {
-                const response = await fetch(driveUrl, { 
-                    mode: 'no-cors', // Modo no-cors para evitar errores de CORS
-                    cache: 'no-store' 
-                });
-                
-                // Con 'no-cors' no podemos leer la respuesta, pero podemos ver si se cargó
-                showNotification('✅ Carga directa iniciada (verifica la consola)', 'success');
-                console.log('Carga directa iniciada, respuesta:', response);
-                
-                // Abrir en una nueva pestaña como alternativa
-                window.open(driveUrl, '_blank');
-                
-            } catch (error) {
-                showNotification('❌ Carga directa falló', 'error');
-                console.error('Carga directa falló:', error);
-            }
-        }
-        
-        // Formatear contenido con colores
+
         function formatContent(text) {
             let html = '';
             const lines = text.split('\n');
             let inComparison = false;
-            let comparisonCount = 0;
             
-            lines.forEach((line, index) => {
-                // Detectar secciones de comparación
+            lines.forEach((line) => {
                 if (line.includes('COMPARANDO:')) {
                     inComparison = true;
-                    comparisonCount++;
-                    html += `<div class="comparison" id="comp${comparisonCount}">
-                                <h3 style="color:#8b5cf6;margin-top:0;">${line}</h3>`;
+                    html += `<div class="comparison"><h3 style="color:#8b5cf6;margin-top:0;">${line}</h3>`;
                     return;
                 }
-                
-                // Cerrar sección de comparación
-                if (line.includes('================================================================') && inComparison) {
+                if (line.includes('====================') && inComparison) {
                     inComparison = false;
-                    html += `</div><hr style="border-color:#334155;margin:20px 0;">`;
+                    html += `</div>`;
                     return;
                 }
                 
-                // Aplicar estilos según contenido
                 let lineClass = '';
-                if (line.includes('[+]')) lineClass = 'new';
-                else if (line.includes('[-]')) lineClass = 'closed';
-                else if (line.includes('[*]')) lineClass = 'changed';
-                else if (line.startsWith('  +')) lineClass = 'new';
-                else if (line.startsWith('  -')) lineClass = 'closed';
-                else if (line.startsWith('  *')) lineClass = 'changed';
-                else if (line.includes('Símbolo') && line.includes('Invrs')) {
-                    lineClass = 'table-header';
-                    line = `<strong>${line}</strong>`;
-                }
+                if (line.includes('[+]') || line.startsWith('  +')) lineClass = 'new';
+                else if (line.includes('[-]') || line.startsWith('  -')) lineClass = 'closed';
+                else if (line.includes('[*]') || line.startsWith('  *')) lineClass = 'changed';
                 
-                // Línea normal
-                if (line.trim() === '') {
-                    html += '<br>';
-                } else {
-                    html += `<div class="${lineClass}">${escapeHtml(line)}</div>`;
-                }
+                html += `<div class="${lineClass}">${line.trim() === '' ? '<br>' : escapeHtml(line)}</div>`;
             });
-            
             return html;
         }
-        
-        // Resaltar cambios recientes
-        function highlightNewChanges() {
-            const elements = document.querySelectorAll('#output div');
-            elements.forEach(el => {
-                if (el.textContent.includes('+') || el.textContent.includes('-') || 
-                    el.textContent.includes('*')) {
-                    el.classList.add('highlight');
-                    
-                    // Remover highlight después de la animación
-                    setTimeout(() => {
-                        el.classList.remove('highlight');
-                    }, 2000);
-                }
-            });
-        }
-        
-        // Auto-refresh
-        function startAutoRefresh() {
-            const btn = document.getElementById('autoRefreshBtn');
-            
-            if (autoRefreshInterval) {
-                clearInterval(autoRefreshInterval);
-                autoRefreshInterval = null;
-                btn.textContent = '⏱️ Auto-Refresh: OFF';
-                btn.style.background = '#6b7280';
-                showNotification('🛑 Auto-refresh detenido', 'info');
-            } else {
-                autoRefreshInterval = setInterval(forceRefresh, refreshTime);
-                btn.textContent = `⏱️ Auto-Refresh: ${refreshTime/1000}s`;
-                btn.style.background = '#10b981';
-                showNotification('🔄 Auto-refresh activado', 'success');
-                updateNextRefreshTime();
-            }
-        }
-        
-        // Actualizar intervalo
-        function updateInterval() {
-            const select = document.getElementById('refreshInterval');
-            refreshTime = parseInt(select.value);
-            
-            if (autoRefreshInterval) {
-                clearInterval(autoRefreshInterval);
-                autoRefreshInterval = setInterval(forceRefresh, refreshTime);
-                document.getElementById('autoRefreshBtn').textContent = 
-                    `⏱️ Auto-Refresh: ${refreshTime/1000}s`;
-                updateNextRefreshTime();
-            }
-        }
-        
-        // Utilidades
-        function updateFileInfo(text) {
-            document.getElementById('fileSize').textContent = `${(text.length/1024).toFixed(2)} KB`;
-            document.getElementById('lineCount').textContent = text.split('\n').length;
-        }
-        
-        function updateDisplayTime() {
-            const now = new Date();
-            document.getElementById('lastUpdate').textContent = now.toLocaleTimeString();
-            
-            if (autoRefreshInterval) {
-                updateNextRefreshTime();
-            }
-        }
-        
-        function updateNextRefreshTime() {
-            if (autoRefreshInterval) {
-                const next = new Date(Date.now() + refreshTime);
-                document.getElementById('nextRefresh').textContent = next.toLocaleTimeString();
-            }
-        }
-        
-        function toggleRawView() {
-            isRawView = !isRawView;
-            const btn = document.getElementById('rawViewBtn');
-            const output = document.getElementById('output');
-            
-            if (isRawView) {
-                btn.textContent = '🎨 Vista Formateada';
-                btn.style.background = '#8b5cf6';
-                output.textContent = output.textContent || output.innerText;
-            } else {
-                btn.textContent = '📄 Vista Raw';
-                btn.style.background = '#3b82f6';
-                output.innerHTML = formatContent(output.textContent || output.innerText);
-            }
-        }
-        
-        function formatReport() {
-            const output = document.getElementById('output');
-            const text = output.textContent || output.innerText;
-            output.innerHTML = formatContent(text);
-            isRawView = false;
-            document.getElementById('rawViewBtn').textContent = '📄 Vista Raw';
-        }
-        
+
         async function generateHash(text) {
-            // Hash simple para detectar cambios
             const encoder = new TextEncoder();
             const data = encoder.encode(text);
             const hashBuffer = await crypto.subtle.digest('SHA-256', data);
-            const hashArray = Array.from(new Uint8Array(hashBuffer));
-            return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+            return Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, '0')).join('');
         }
-        
-        function showNotification(message, type) {
-            // Crear notificación temporal
-            const notification = document.createElement('div');
-            notification.style.cssText = `
-                position: fixed; top: 20px; right: 20px; padding: 15px 20px;
-                border-radius: 8px; color: white; z-index: 1000;
-                background: ${type === 'success' ? '#10b981' : type === 'error' ? '#ef4444' : '#3b82f6'};
-                box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-                animation: slideIn 0.3s ease;
-            `;
-            
-            // Animación CSS
-            const style = document.createElement('style');
-            style.textContent = `
-                @keyframes slideIn {
-                    from { transform: translateX(100%); opacity: 0; }
-                    to { transform: translateX(0); opacity: 1; }
+
+        function highlightNewChanges() {
+            const elements = document.querySelectorAll('#output div');
+            elements.forEach(el => {
+                if (el.classList.contains('new') || el.classList.contains('changed')) {
+                    el.classList.add('highlight');
+                    setTimeout(() => el.classList.remove('highlight'), 2000);
                 }
-            `;
-            document.head.appendChild(style);
-            
-            notification.textContent = `${getEmoji(type)} ${message}`;
-            document.body.appendChild(notification);
-            
-            // Auto-remover después de 3 segundos
-            setTimeout(() => {
-                notification.style.animation = 'slideIn 0.3s ease reverse';
-                setTimeout(() => notification.remove(), 300);
-            }, 3000);
+            });
         }
-        
-        function getEmoji(type) {
-            switch(type) {
-                case 'success': return '✅';
-                case 'error': return '❌';
-                case 'info': return 'ℹ️';
-                default: return '📢';
-            }
-        }
-        
+
         function escapeHtml(text) {
             const div = document.createElement('div');
             div.textContent = text;
             return div.innerHTML;
         }
-        
-        // Iniciar auto-refresh después de 30 segundos de inactividad
-        setTimeout(() => {
-            if (!autoRefreshInterval) {
-                startAutoRefresh();
-            }
-        }, 30000);
     </script>
 </body>
 </html>

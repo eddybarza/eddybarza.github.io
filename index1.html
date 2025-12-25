@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reporte</title>
+    <style>
+        * { box-sizing: border-box; font-family: 'Segoe UI', monospace; }
+        body { background: #0f172a; color: #f1f5f9; margin: 0; padding: 20px; }
+        .container { max-width: 1400px; margin: 0 auto; background: #1e293b; 
+                    border-radius: 12px; padding: 25px; border: 1px solid #334155; }
+        
+        #output { background: #0f172a; border: 1px solid #334155; border-radius: 8px; 
+                 padding: 20px; white-space: pre-wrap; 
+                 font-family: 'Monaco', monospace; line-height: 1.6; font-size: 13px;
+                 max-height: 90vh; overflow-y: auto; }
+        
+        .new { color: #10b981; font-weight: bold; }
+        .closed { color: #ef4444; font-weight: bold; }
+        .changed { color: #60a5fa; font-weight: bold; }
+        
+        .highlight { animation: highlight 2s ease; }
+        @keyframes highlight {
+            0% { background-color: rgba(59, 130, 246, 0.5); }
+            100% { background-color: transparent; }
+        }
+        .comparison { border-left: 4px solid #8b5cf6; padding-left: 15px; margin: 20px 0; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="output">Cargando reporte...</div>
+    </div>
+
+    <script>
+        const DRIVE_ID = '16M0sXoImDBXQs9_9RUr5uypUr3qOngxU';
+        const REFRESH_TIME = 10000; 
+        
+        const PROXY_LIST = [
+            { name: 'CorsProxy', url: 'https://corsproxy.io/?', encode: true },
+            { name: 'AllOrigins', url: 'https://api.allorigins.win/raw?url=', encode: true },
+            { name: 'CodeTabs', url: 'https://api.codetabs.com/v1/proxy?quest=', encode: true }
+        ];
+        
+        let lastContentHash = '';
+        let currentProxyIndex = 0;
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            forceRefresh();
+            setInterval(forceRefresh, REFRESH_TIME);
+        });
+        
+        async function forceRefresh() {
+            const output = document.getElementById('output');
+            const timestamp = new Date().getTime();
+            const driveUrl = `https://drive.google.com/uc?export=download&id=${DRIVE_ID}&_t=${timestamp}`;
+            
+            for (let i = 0; i < PROXY_LIST.length; i++) {
+                const proxyIndex = (currentProxyIndex + i) % PROXY_LIST.length;
+                const proxy = PROXY_LIST[proxyIndex];
+                
+                try {
+                    const proxyUrl = proxy.encode ? proxy.url + encodeURIComponent(driveUrl) : proxy.url + driveUrl;
+                    const response = await fetch(proxyUrl, { cache: 'no-store' });
+                    
+                    if (!response.ok) throw new Error();
+                    
+                    const text = await response.text();
+                    const hash = await generateHash(text);
+                    
+                    if (hash !== lastContentHash) {
+                        lastContentHash = hash;
+                        output.innerHTML = formatContent(text);
+                        highlightNewChanges();
+                    }
+                    
+                    currentProxyIndex = proxyIndex;
+                    break;
+                } catch (error) {
+                    continue; // Probar siguiente proxy en silencio
+                }
+            }
+        }
+
+        function formatContent(text) {
+            let html = '';
+            const lines = text.split('\n');
+            let inComparison = false;
+            
+            lines.forEach((line) => {
+                if (line.includes('COMPARANDO:')) {
+                    inComparison = true;
+                    html += `<div class="comparison"><h3 style="color:#8b5cf6;margin-top:0;">${line}</h3>`;
+                    return;
+                }
+                if (line.includes('====================') && inComparison) {
+                    inComparison = false;
+                    html += `</div>`;
+                    return;
+                }
+                
+                let lineClass = '';
+                if (line.includes('[+]') || line.startsWith('  +')) lineClass = 'new';
+                else if (line.includes('[-]') || line.startsWith('  -')) lineClass = 'closed';
+                else if (line.includes('[*]') || line.startsWith('  *')) lineClass = 'changed';
+                
+                html += `<div class="${lineClass}">${line.trim() === '' ? '<br>' : escapeHtml(line)}</div>`;
+            });
+            return html;
+        }
+
+        async function generateHash(text) {
+            const encoder = new TextEncoder();
+            const data = encoder.encode(text);
+            const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+            return Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, '0')).join('');
+        }
+
+        function highlightNewChanges() {
+            const elements = document.querySelectorAll('#output div');
+            elements.forEach(el => {
+                if (el.classList.contains('new') || el.classList.contains('changed')) {
+                    el.classList.add('highlight');
+                    setTimeout(() => el.classList.remove('highlight'), 2000);
+                }
+            });
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+    </script>
+</body>
+</html>

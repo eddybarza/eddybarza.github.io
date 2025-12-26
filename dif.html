@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard de Inversiones</title>
+    <style>
+        :root {
+            --bg: #0f172a;
+            --card-bg: #1e293b;
+            --border: #334155;
+            --text-dim: #94a3b8;
+            --accent: #3b82f6;
+            --pos: #10b981;
+            --neg: #ef4444;
+            --chg: #f59e0b;
+        }
+
+        * { box-sizing: border-box; font-family: 'Segoe UI', system-ui, sans-serif; }
+        body { background: var(--bg); color: #f1f5f9; margin: 0; padding: 0; }
+        
+        /* Navegación */
+        .nav-tabs {
+            display: flex;
+            background: #161e2e;
+            padding: 10px 10px 0 10px;
+            border-bottom: 1px solid var(--border);
+            gap: 5px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .tab-btn {
+            padding: 12px 20px;
+            border: none;
+            background: transparent;
+            color: var(--text-dim);
+            cursor: pointer;
+            font-weight: 600;
+            border-radius: 8px 8px 0 0;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+        }
+
+        .tab-btn.active {
+            background: var(--card-bg);
+            color: var(--accent);
+            border: 1px solid var(--border);
+            border-bottom: 2px solid var(--bg);
+            margin-bottom: -1px;
+        }
+
+        .container { max-width: 1100px; margin: 0 auto; padding: 20px; }
+
+        header { text-align: center; margin-bottom: 25px; }
+        h1 { 
+            margin: 0; font-size: 1.5rem; color: #fff;
+            background: linear-gradient(to right, #60a5fa, #3b82f6);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+
+        /* Tarjetas */
+        .card { 
+            background: var(--card-bg); 
+            border: 1px solid var(--border); 
+            border-radius: 12px; 
+            margin-bottom: 25px; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .card-header { 
+            background: rgba(59, 130, 246, 0.05); 
+            padding: 15px 20px; 
+            border-bottom: 1px solid var(--border);
+            color: var(--accent);
+            font-weight: bold;
+            font-size: 0.95rem;
+        }
+
+        .card-body { padding: 15px; }
+
+        /* Tablas */
+        .table-container { width: 100%; overflow-x: auto; border-radius: 8px; border: 1px solid #2d3748; margin-top: 10px; }
+        table { width: 100%; border-collapse: collapse; font-size: 0.85rem; text-align: left; min-width: 650px; }
+        th { background: #161e2e; color: var(--text-dim); padding: 12px 10px; font-weight: 600; font-size: 0.75rem; text-transform: uppercase; }
+        td { padding: 10px; border-bottom: 1px solid #2d3748; white-space: nowrap; }
+        
+        .sym-cell { font-weight: bold; color: #fff; }
+        .op-buy { color: var(--pos); font-weight: bold; }
+        
+        /* Estilos Pestaña 1 (Diferencias) */
+        .section-title { font-size: 0.85rem; font-weight: bold; padding: 5px 10px; border-radius: 5px; margin: 15px 0 10px 0; display: inline-block; }
+        .new-bg { background: rgba(16, 185, 129, 0.1); color: var(--pos); }
+        .closed-bg { background: rgba(239, 68, 68, 0.1); color: var(--neg); }
+        .changed-bg { background: rgba(245, 158, 11, 0.1); color: var(--chg); }
+
+        .loading { text-align: center; padding: 50px; color: var(--accent); }
+
+        @media (max-width: 600px) {
+            .tab-btn { padding: 10px 12px; font-size: 0.8rem; }
+            h1 { font-size: 1.2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="nav-tabs">
+        <button class="tab-btn active" onclick="switchTab('diferencias', this)">📊 Diferencias</button>
+        <button class="tab-btn" onclick="switchTab('cartera', this)">💼 Estado de Cartera</button>
+    </nav>
+
+    <div class="container">
+        <header>
+            <h1 id="mainTitle">Reporte de Inversiones</h1>
+            <div id="status" style="font-size: 11px; color: var(--text-dim); margin-top: 5px; font-family: monospace;">Actualizando...</div>
+        </header>
+
+        <div id="content">
+            <div class="loading">Cargando datos...</div>
+        </div>
+    </div>
+
+    <script>
+        const CONFIG = {
+            diferencias: {
+                id: '1HmLzR0FVbthCQoZYOSnLE9xkvpFvr2iq',
+                title: 'Reporte de Diferencias'
+            },
+            cartera: {
+                id: '1-HXZmqGimYkmcDvvh3vHNon-fFxaCuOu',
+                title: 'Estado de Cartera Activa'
+            }
+        };
+
+        let currentTab = 'diferencias';
+        const PROXY = 'https://corsproxy.io/?';
+
+        function switchTab(tab, btn) {
+            currentTab = tab;
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            document.getElementById('mainTitle').textContent = CONFIG[tab].title;
+            document.getElementById('content').innerHTML = '<div class="loading">Cambiando de reporte...</div>';
+            loadData();
+        }
+
+        async function loadData() {
+            try {
+                const id = CONFIG[currentTab].id;
+                const url = `${PROXY}${encodeURIComponent(`https://drive.google.com/uc?export=download&id=${id}&t=${Date.now()}`)}`;
+                const response = await fetch(url);
+                const text = await response.text();
+                
+                if (currentTab === 'diferencias') {
+                    parseDiferencias(text);
+                } else {
+                    parseCartera(text);
+                }
+            } catch (e) {
+                document.getElementById('content').innerHTML = '<div style="text-align:center;color:red;">Error al conectar con Drive</div>';
+            }
+        }
+
+        // PROCESADOR PESTAÑA 1: DIFERENCIAS
+        function parseDiferencias(text) {
+            const lines = text.split('\n');
+            let html = '';
+            let currentCard = null;
+            let sections = { nuevas: [], cerradas: [], cambios: [] };
+            let currentType = '';
+
+            lines.forEach(line => {
+                if (line.includes('Archivos analizados:')) document.getElementById('status').textContent = line;
+                if (line.includes('COMPARANDO:')) {
+                    if (currentCard) html += renderCardDiferencias(currentCard, sections);
+                    currentCard = line.replace(/=/g, '').trim();
+                    sections = { nuevas: [], cerradas: [], cambios: [] };
+                    return;
+                }
+                if (line.includes('[+]')) currentType = 'nuevas';
+                else if (line.includes('[-]')) currentType = 'cerradas';
+                else if (line.includes('[*]')) currentType = 'cambios';
+
+                const clean = line.trim();
+                if (clean.startsWith('+')) sections.nuevas.push(splitColumns(line));
+                if (clean.startsWith('-')) sections.cerradas.push(splitColumns(line));
+                if (clean.startsWith('*')) sections.cambios.push(splitColumns(line));
+            });
+            if (currentCard) html += renderCardDiferencias(currentCard, sections);
+            document.getElementById('content').innerHTML = html;
+        }
+
+        // PROCESADOR PESTAÑA 2: CARTERA ACTIVA
+        function parseCartera(text) {
+            const lines = text.split('\n');
+            let html = '';
+            let currentCard = null;
+            let rows = [];
+
+            lines.forEach(line => {
+                if (line.includes('FECHA DE REPORTE:')) {
+                    if (currentCard) html += renderCardCartera(currentCard, rows);
+                    currentCard = line.replace(/=/g, '').trim();
+                    rows = [];
+                    return;
+                }
+                // Si la línea tiene datos (detectamos por el símbolo $ o números)
+                if (line.includes('$') || (line.trim() && !line.includes('---') && !line.includes('Símbolo'))) {
+                    const columns = splitColumns(line);
+                    if (columns.length >= 4) rows.push(columns);
+                }
+            });
+            if (currentCard) html += renderCardCartera(currentCard, rows);
+            document.getElementById('content').innerHTML = html;
+        }
+
+        function splitColumns(line) {
+            return line.trim().replace(/^[\+\-\*]\s+/, '').split(/\s{2,}/);
+        }
+
+        function renderCardDiferencias(title, data) {
+            return `
+                <div class="card">
+                    <div class="card-header">${title}</div>
+                    <div class="card-body">
+                        ${renderTable('Nuevas', data.nuevas, 'new-bg', ['Símbolo', 'Invrs', 'Monto', 'Units', 'Nombre'], 'op-buy')}
+                        ${renderTable('Cerradas', data.cerradas, 'closed-bg', ['Símbolo', 'Invrs', 'Monto', 'Units', 'Nombre'], 'color:var(--neg)')}
+                        ${renderTable('Cambios', data.cambios, 'changed-bg', ['Símbolo', 'Dif $', 'Dif Uni', 'Invrs', 'Totales', 'Nombre'], 'color:var(--chg)')}
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderCardCartera(title, rows) {
+            return `
+                <div class="card">
+                    <div class="card-header">${title}</div>
+                    <div class="card-body">
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Símbolo</th><th>Unidades</th><th>Invertido</th><th>Invrs.</th><th>Operación</th><th>Nombre</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${rows.map(row => `
+                                        <tr>
+                                            <td class="sym-cell">${row[0]}</td>
+                                            <td>${row[1]}</td>
+                                            <td>${row[2]}</td>
+                                            <td>${row[3]}</td>
+                                            <td class="op-buy">${row[4] || 'Comprar'}</td>
+                                            <td style="color:var(--text-dim)">${row[5] || ''}</td>
+                                        </tr>
+                                    `).join('')}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderTable(label, rows, colorClass, headers, symStyle) {
+            if (rows.length === 0) return '';
+            return `
+                <div class="section-title ${colorClass}">${label} (${rows.length})</div>
+                <div class="table-container">
+                    <table>
+                        <thead><tr>${headers.map(h => `<th>${h}</th>`).join('')}</tr></thead>
+                        <tbody>
+                            ${rows.map(row => `
+                                <tr>
+                                    <td style="${symStyle}">${row[0]}</td>
+                                    ${row.slice(1).map(c => `<td>${c}</td>`).join('')}
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                </div>
+            `;
+        }
+
+        // Inicializar
+        loadData();
+        setInterval(loadData, 30000); // Refresco cada 30 seg
+    </script>
+</body>
+</html>

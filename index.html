@@ -29,6 +29,7 @@
             position: sticky;
             top: 0;
             z-index: 100;
+            overflow-x: auto;
         }
 
         .tab-btn {
@@ -41,6 +42,7 @@
             border-radius: 8px 8px 0 0;
             transition: all 0.3s;
             font-size: 0.9rem;
+            white-space: nowrap;
         }
 
         .tab-btn.active {
@@ -51,7 +53,7 @@
             margin-bottom: -1px;
         }
 
-        .container { max-width: 1100px; margin: 0 auto; padding: 20px; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
 
         header { text-align: center; margin-bottom: 25px; }
         h1 { 
@@ -96,11 +98,139 @@
         .closed-bg { background: rgba(239, 68, 68, 0.1); color: var(--neg); }
         .changed-bg { background: rgba(245, 158, 11, 0.1); color: var(--chg); }
 
+        /* Estilos para Análisis Técnico */
+        .stock-card {
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            background: rgba(59, 130, 246, 0.02);
+        }
+
+        .stock-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .stock-info {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .stock-symbol {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #fff;
+            margin-bottom: 4px;
+        }
+
+        .stock-name {
+            font-size: 0.85rem;
+            color: var(--text-dim);
+        }
+
+        .stock-price-section {
+            text-align: right;
+            min-width: 150px;
+        }
+
+        .stock-current-price {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: #fff;
+            margin-bottom: 4px;
+        }
+
+        .stock-change {
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .price-positive { color: var(--pos); }
+        .price-negative { color: var(--neg); }
+        
+        .badge {
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+        .badge-compra { background: rgba(16, 185, 129, 0.2); color: var(--pos); }
+        .badge-compra-fuerte { background: rgba(16, 185, 129, 0.3); color: var(--pos); border: 2px solid var(--pos); }
+        .badge-mantener { background: rgba(245, 158, 11, 0.2); color: var(--chg); }
+        .badge-vender { background: rgba(239, 68, 68, 0.2); color: var(--neg); }
+        
+        .price-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 10px;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .price-item {
+            background: rgba(30, 41, 59, 0.5);
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+        }
+
+        .price-label {
+            font-size: 0.7rem;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            margin-bottom: 4px;
+            font-weight: 600;
+        }
+
+        .price-value {
+            font-size: 0.95rem;
+            font-weight: bold;
+            color: #fff;
+        }
+
+        .metric-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 10px;
+        }
+        
+        .metric-box {
+            background: rgba(59, 130, 246, 0.05);
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+        }
+        
+        .metric-label {
+            font-size: 0.7rem;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+        
+        .metric-value {
+            font-size: 0.9rem;
+            font-weight: bold;
+            color: #fff;
+        }
+
         .loading { text-align: center; padding: 50px; color: var(--accent); }
 
         @media (max-width: 600px) {
             .tab-btn { padding: 10px 12px; font-size: 0.8rem; }
             h1 { font-size: 1.2rem; }
+            .metric-grid { grid-template-columns: repeat(2, 1fr); }
+            .price-grid { grid-template-columns: repeat(2, 1fr); }
+            .stock-header { flex-direction: column; }
+            .stock-price-section { text-align: left; }
         }
     </style>
 </head>
@@ -109,6 +239,7 @@
     <nav class="nav-tabs">
         <button class="tab-btn active" onclick="switchTab('diferencias', this)">📊 Diferencias</button>
         <button class="tab-btn" onclick="switchTab('cartera', this)">💼 Estado de Cartera</button>
+        <button class="tab-btn" onclick="switchTab('analisis', this)">📈 Análisis Técnico</button>
     </nav>
 
     <div class="container">
@@ -131,6 +262,10 @@
             cartera: {
                 id: '1-HXZmqGimYkmcDvvh3vHNon-fFxaCuOu',
                 title: 'Estado de Cartera Activa'
+            },
+            analisis: {
+                id: '1itBdk6WP0mMPAd4-wzx2CHENnPDRVRXU',
+                title: 'Análisis Técnico de Acciones'
             }
         };
 
@@ -155,8 +290,10 @@
                 
                 if (currentTab === 'diferencias') {
                     parseDiferencias(text);
-                } else {
+                } else if (currentTab === 'cartera') {
                     parseCartera(text);
+                } else if (currentTab === 'analisis') {
+                    parseAnalisisTecnico(text);
                 }
             } catch (e) {
                 document.getElementById('content').innerHTML = '<div style="text-align:center;color:red;">Error al conectar con Drive</div>';
@@ -206,7 +343,6 @@
                     rows = [];
                     return;
                 }
-                // Si la línea tiene datos (detectamos por el símbolo $ o números)
                 if (line.includes('$') || (line.trim() && !line.includes('---') && !line.includes('Símbolo'))) {
                     const columns = splitColumns(line);
                     if (columns.length >= 4) rows.push(columns);
@@ -214,6 +350,164 @@
             });
             if (currentCard) html += renderCardCartera(currentCard, rows);
             document.getElementById('content').innerHTML = html;
+        }
+
+        // PROCESADOR PESTAÑA 3: ANÁLISIS TÉCNICO
+        function parseAnalisisTecnico(text) {
+            const lines = text.split('\n').filter(l => l.trim());
+            let stocks = [];
+            let lastTimestamp = '';
+            
+            lines.forEach(line => {
+                if (line.includes('Nombre:')) {
+                    const data = {};
+                    const parts = line.split('|');
+                    
+                    // Extraer timestamp
+                    const timestampMatch = line.match(/^(\d{4}-\d{2}-\d{2}\s+\d{2}:\d{2}:\d{2})/);
+                    if (timestampMatch) {
+                        lastTimestamp = timestampMatch[1];
+                    }
+                    
+                    parts.forEach(part => {
+                        const colonIndex = part.indexOf(':');
+                        if (colonIndex > 0) {
+                            const key = part.substring(0, colonIndex).trim();
+                            const value = part.substring(colonIndex + 1).trim();
+                            if (key && value && !key.match(/^\d{4}-\d{2}-\d{2}/)) {
+                                data[key] = value;
+                            }
+                        }
+                    });
+                    
+                    if (Object.keys(data).length > 0) {
+                        stocks.push(data);
+                    }
+                }
+            });
+
+            // Agrupar por timestamp para eliminar duplicados
+            const uniqueStocks = [];
+            const seenSymbols = new Set();
+            
+            // Procesar desde el final para obtener los más recientes
+            for (let i = stocks.length - 1; i >= 0; i--) {
+                const symbol = stocks[i]['Símbolo'];
+                if (symbol && !seenSymbols.has(symbol)) {
+                    seenSymbols.add(symbol);
+                    uniqueStocks.unshift(stocks[i]);
+                }
+            }
+
+            if (lastTimestamp) {
+                document.getElementById('status').textContent = `Última actualización: ${lastTimestamp}`;
+            }
+
+            let html = '<div class="card"><div class="card-header">Análisis Técnico - ' + uniqueStocks.length + ' Acciones</div><div class="card-body">';
+            
+            uniqueStocks.forEach(stock => {
+                html += renderStockAnalysis(stock);
+            });
+            
+            html += '</div></div>';
+            document.getElementById('content').innerHTML = html;
+        }
+
+        function renderStockAnalysis(data) {
+            const nombre = data['Nombre'] || 'N/A';
+            const simbolo = data['Símbolo'] || 'N/A';
+            const precioAperturaInicial = data['Precio apertura inicial'] || 'N/A';
+            const precioApertura = data['Precio apertura'] || 'N/A';
+            const precioActual = data['Precio actual'] || 'N/A';
+            const precioMaximo = data['Precio máximo'] || 'N/A';
+            const precioMinimo = data['Precio mínimo'] || 'N/A';
+            const cambio = data['Cambio'] || 'N/A';
+            const fairValue = data['Fair Value'] || 'N/A';
+            const margenSeguridad = data['Margen Seguridad'] || 'N/A';
+            const sma20 = data['SMA20'] || 'N/A';
+            const sma50 = data['SMA50'] || 'N/A';
+            const sma200 = data['SMA200'] || 'N/A';
+            const rsi = data['RSI'] || 'N/A';
+            const recomendacion = data['Recomendación'] || 'N/A';
+            const volumen = data['Volumen'] || 'N/A';
+
+            const cambioStr = cambio.split('(')[0].trim();
+            const cambioNum = parseFloat(cambioStr);
+            const cambioClass = cambioNum >= 0 ? 'price-positive' : 'price-negative';
+            
+            let badgeClass = 'badge-mantener';
+            if (recomendacion.includes('COMPRA FUERTE')) badgeClass = 'badge-compra-fuerte';
+            else if (recomendacion.includes('COMPRA')) badgeClass = 'badge-compra';
+            else if (recomendacion.includes('VENDER')) badgeClass = 'badge-vender';
+
+            return `
+                <div class="stock-card">
+                    <div class="stock-header">
+                        <div class="stock-info">
+                            <div class="stock-symbol">${simbolo}</div>
+                            <div class="stock-name">${nombre}</div>
+                        </div>
+                        <div class="stock-price-section">
+                            <div class="stock-current-price">${precioActual}</div>
+                            <div class="stock-change ${cambioClass}">${cambio}</div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <span class="badge ${badgeClass}">${recomendacion}</span>
+                    </div>
+
+                    <div class="price-grid">
+                        <div class="price-item">
+                            <div class="price-label">Apertura Inicial</div>
+                            <div class="price-value">${precioAperturaInicial}</div>
+                        </div>
+                        <div class="price-item">
+                            <div class="price-label">Apertura Hoy</div>
+                            <div class="price-value">${precioApertura}</div>
+                        </div>
+                        <div class="price-item">
+                            <div class="price-label">Máximo</div>
+                            <div class="price-value" style="color: var(--pos);">${precioMaximo}</div>
+                        </div>
+                        <div class="price-item">
+                            <div class="price-label">Mínimo</div>
+                            <div class="price-value" style="color: var(--neg);">${precioMinimo}</div>
+                        </div>
+                    </div>
+
+                    <div class="metric-grid">
+                        <div class="metric-box">
+                            <div class="metric-label">Fair Value</div>
+                            <div class="metric-value">${fairValue}</div>
+                        </div>
+                        <div class="metric-box">
+                            <div class="metric-label">Margen Seguridad</div>
+                            <div class="metric-value">${margenSeguridad}</div>
+                        </div>
+                        <div class="metric-box">
+                            <div class="metric-label">RSI</div>
+                            <div class="metric-value">${rsi}</div>
+                        </div>
+                        <div class="metric-box">
+                            <div class="metric-label">SMA 20</div>
+                            <div class="metric-value">${sma20}</div>
+                        </div>
+                        <div class="metric-box">
+                            <div class="metric-label">SMA 50</div>
+                            <div class="metric-value">${sma50}</div>
+                        </div>
+                        <div class="metric-box">
+                            <div class="metric-label">SMA 200</div>
+                            <div class="metric-value">${sma200}</div>
+                        </div>
+                        <div class="metric-box">
+                            <div class="metric-label">Volumen</div>
+                            <div class="metric-value">${volumen.toLocaleString ? parseInt(volumen).toLocaleString() : volumen}</div>
+                        </div>
+                    </div>
+                </div>
+            `;
         }
 
         function splitColumns(line) {
